@@ -1,0 +1,25 @@
+{
+  "name": "@world-cheese-database",
+  "version": "1.0.0",
+  "description": "Welcome to the **CheeseWizz** project!🧀",
+  "main": "index.js",
+  "scripts": {
+      "test": "jest --coverage",
+      "start": "node server.js",
+      "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.3",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.4"
+  }
+}
