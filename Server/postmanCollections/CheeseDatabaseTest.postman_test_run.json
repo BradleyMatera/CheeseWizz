@@ -1,0 +1,267 @@
+{
+	"id": "194d7678-71f2-45fa-97f5-91e1555e7f0a",
+	"name": "CheeseDatabaseTest",
+	"timestamp": "2024-08-18T21:46:08.108Z",
+	"collection_id": "36192332-df86137b-a96a-4537-b2af-8a64ae8189f5",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 20,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2024-08-18T21:46:07.845Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "89ba3291-988b-4b5a-9ada-f0ba3bcaeef7",
+			"name": "POST data to Cheese Database",
+			"url": "localhost:3000/api/v1/cheeses/",
+			"time": 7,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Response status code is 201": true,
+				"Set cheeseId variable": true,
+				"Response contains expected fields": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Set cheeseId variable": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains expected fields": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				7
+			],
+			"allTests": [
+				{
+					"Response status code is 201": true,
+					"Set cheeseId variable": true,
+					"Response contains expected fields": true
+				}
+			]
+		},
+		{
+			"id": "ccb87421-4a32-487e-ac12-2f06b5016685",
+			"name": "Get Current Cheese Data",
+			"url": "localhost:3000/api/v1/cheeses",
+			"time": 4,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response contains an array of cheeses": true,
+				"Each cheese entry has required fields": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains an array of cheeses": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Each cheese entry has required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response contains an array of cheeses": true,
+					"Each cheese entry has required fields": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "b13f4894-5fb6-40a9-a46a-93b56704aca4",
+			"name": "Get Current Cheese Data ById",
+			"url": "localhost:3000/api/v1/cheeses/66bcfbc9ecada054a595e7c9",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response contains the correct cheese data": true,
+				"Origin and taste fields are non-empty": true,
+				"Response time is within acceptable range": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains the correct cheese data": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Origin and taste fields are non-empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within acceptable range": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response contains the correct cheese data": true,
+					"Origin and taste fields are non-empty": true,
+					"Response time is within acceptable range": true
+				}
+			]
+		},
+		{
+			"id": "06a25919-f006-4d70-b8b3-995c92dd75c0",
+			"name": "PUT Cheese DataById",
+			"url": "localhost:3000/api/v1/cheeses/66bcfbc9ecada054a595e7c9",
+			"time": 5,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response contains updated cheese data": true,
+				"Flavor, texture, and aroma in taste object are correctly updated": true,
+				"Production method and location are correctly updated": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains updated cheese data": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Flavor, texture, and aroma in taste object are correctly updated": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Production method and location are correctly updated": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				5
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response contains updated cheese data": true,
+					"Flavor, texture, and aroma in taste object are correctly updated": true,
+					"Production method and location are correctly updated": true
+				}
+			]
+		},
+		{
+			"id": "f65f6396-8c00-407e-aaef-e12878ed4f1c",
+			"name": "Delete DataById",
+			"url": "localhost:3000/api/v1/cheeses/66bcfbc9ecada054a595e7c9",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response contains success confirmation": true,
+				"Response contains the correct ID": true,
+				"Response message confirms deletion": true,
+				"Response time is within acceptable range": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains success confirmation": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains the correct ID": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response message confirms deletion": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within acceptable range": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response contains success confirmation": true,
+					"Response contains the correct ID": true,
+					"Response message confirms deletion": true,
+					"Response time is within acceptable range": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 20,
+	"collection": {
+		"requests": [
+			{
+				"id": "89ba3291-988b-4b5a-9ada-f0ba3bcaeef7",
+				"method": "POST"
+			},
+			{
+				"id": "ccb87421-4a32-487e-ac12-2f06b5016685",
+				"method": "GET"
+			},
+			{
+				"id": "b13f4894-5fb6-40a9-a46a-93b56704aca4",
+				"method": "GET"
+			},
+			{
+				"id": "06a25919-f006-4d70-b8b3-995c92dd75c0",
+				"method": "PUT"
+			},
+			{
+				"id": "f65f6396-8c00-407e-aaef-e12878ed4f1c",
+				"method": "DELETE"
+			}
+		]
+	}
+}

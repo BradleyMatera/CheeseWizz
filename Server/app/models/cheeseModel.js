@@ -120,7 +120,7 @@ const cheeseSchema = new mongoose.Schema({
         },  // Optional, max length validation
         aged: { 
             type: String, 
-            enum: ['fresh', 'aged', 'extra aged'], // Enum validation for aging stages
+            enum: ['fresh', 'aged', 'extra aged', '1 month'], // Enum validation for aging stages
             maxLength: 100 
         },  // Optional, enum validation
         location: { 
