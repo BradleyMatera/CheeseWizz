@@ -1,7 +1,7 @@
 {
-	"id": "194d7678-71f2-45fa-97f5-91e1555e7f0a",
+	"id": "70d2fe85-171b-41ae-a105-0ebe95246cef",
 	"name": "CheeseDatabaseTest",
-	"timestamp": "2024-08-18T21:46:08.108Z",
+	"timestamp": "2024-08-18T22:39:06.655Z",
 	"collection_id": "36192332-df86137b-a96a-4537-b2af-8a64ae8189f5",
 	"folder_id": 0,
 	"environment_id": "0",
@@ -9,7 +9,7 @@
 	"delay": 0,
 	"persist": true,
 	"status": "finished",
-	"startedAt": "2024-08-18T21:46:07.845Z",
+	"startedAt": "2024-08-18T22:39:06.401Z",
 	"totalFail": 0,
 	"results": [
 		{
@@ -55,7 +55,7 @@
 			"id": "ccb87421-4a32-487e-ac12-2f06b5016685",
 			"name": "Get Current Cheese Data",
 			"url": "localhost:3000/api/v1/cheeses",
-			"time": 4,
+			"time": 6,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -85,7 +85,7 @@
 				}
 			},
 			"times": [
-				4
+				6
 			],
 			"allTests": [
 				{
@@ -99,8 +99,8 @@
 		{
 			"id": "b13f4894-5fb6-40a9-a46a-93b56704aca4",
 			"name": "Get Current Cheese Data ById",
-			"url": "localhost:3000/api/v1/cheeses/66bcfbc9ecada054a595e7c9",
-			"time": 2,
+			"url": "localhost:3000/api/v1/cheeses/66c26eb4496c253efa6f03c9",
+			"time": 4,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -130,7 +130,7 @@
 				}
 			},
 			"times": [
-				2
+				4
 			],
 			"allTests": [
 				{
@@ -144,7 +144,7 @@
 		{
 			"id": "06a25919-f006-4d70-b8b3-995c92dd75c0",
 			"name": "PUT Cheese DataById",
-			"url": "localhost:3000/api/v1/cheeses/66bcfbc9ecada054a595e7c9",
+			"url": "localhost:3000/api/v1/cheeses/66c26eb4496c253efa6f03c9",
 			"time": 5,
 			"responseCode": {
 				"code": 200,
@@ -189,8 +189,8 @@
 		{
 			"id": "f65f6396-8c00-407e-aaef-e12878ed4f1c",
 			"name": "Delete DataById",
-			"url": "localhost:3000/api/v1/cheeses/66bcfbc9ecada054a595e7c9",
-			"time": 2,
+			"url": "localhost:3000/api/v1/cheeses/66c26eb4496c253efa6f03c9",
+			"time": 3,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -225,7 +225,7 @@
 				}
 			},
 			"times": [
-				2
+				3
 			],
 			"allTests": [
 				{
@@ -239,7 +239,7 @@
 		}
 	],
 	"count": 1,
-	"totalTime": 20,
+	"totalTime": 25,
 	"collection": {
 		"requests": [
 			{
