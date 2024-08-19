@@ -22,13 +22,9 @@ const tasteSchema = new mongoose.Schema({
     },
     pairings: { 
         type: [String], 
-        validate: {
-            validator: function(v) {
-                return Array.isArray(v) && v.length > 0;
-            },
-            message: 'There must be at least one pairing.'
-        }
+        required: true, // Ensures the array is present and contains at least one pairing
+        validate: [array => array.length > 0, 'There must be at least one pairing.'] // Simplified validation
     }
 });
 
-module.exports = tasteSchema;
+module.exports = mongoose.model('Taste', tasteSchema); // Exporting as a Mongoose model

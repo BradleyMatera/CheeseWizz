@@ -1,13 +1,13 @@
-const mongoose = require('mongoose'); // Importing Mongoose.
-const Cheese = require('../models/cheeseModel'); // Importing the Cheese model.
+const mongoose = require('mongoose');
+const Taste = require('../models/tasteSchema'); // Import the Taste model
 
-const getAllCheeseTastes = async (req, res) => { // Function to get all cheese tastes.
+// Function to get all cheese tastes
+const getAllCheeseTastes = async (req, res) => {
     try {
-        const cheeses = await Cheese.find({}); 
-        const tastes = cheeses.map(cheese => cheese.taste);
+        const tastes = await Taste.find({}); // Find all tastes in the database
         res.status(200).json({
-            data: tastes,
             success: true,
+            data: tastes,
             message: `${req.method} - Request made to taste endpoint`
         });
     } catch (error) {
@@ -18,26 +18,27 @@ const getAllCheeseTastes = async (req, res) => { // Function to get all cheese t
     }
 };
 
-const getCheeseTasteById = async (req, res) => { // Function to get a specific cheese taste by its ID.
+// Function to get a specific cheese taste by its ID
+const getCheeseTasteById = async (req, res) => {
     try {
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) { 
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // Validate if the ID is a valid MongoDB ObjectID
             return res.status(400).json({
                 success: false,
                 message: 'Invalid ID format'
             });
         }
 
-        const cheese = await Cheese.findById(req.params.id); 
-        if (!cheese) {
+        const taste = await Taste.findById(req.params.id); // Find taste by ID
+        if (!taste) {
             return res.status(404).json({
                 success: false,
-                message: 'Cheese not found'
+                message: 'Taste not found'
             });
         }
 
         res.status(200).json({
-            data: cheese.taste,
             success: true,
+            data: taste,
             message: `${req.method} - Request made to taste endpoint with id ${req.params.id}`
         });
     } catch (error) {

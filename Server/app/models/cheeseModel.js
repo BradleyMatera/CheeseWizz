@@ -1,7 +1,4 @@
 const mongoose = require('mongoose');
-const originSchema = require('./originSchema'); // Import the origin schema
-const tasteSchema = require('./tasteSchema'); // Import the taste schema
-const relatedCheeseSchema = require('./relatedCheeseSchema'); // Import the related cheese schema
 
 // Define the main cheese schema
 const cheeseSchema = new mongoose.Schema({
@@ -19,22 +16,23 @@ const cheeseSchema = new mongoose.Schema({
         max: 100 
     },
     origin: { 
-        type: originSchema, 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Origin',
         required: true 
-    }, // Embed the origin schema
+    }, // Reference the origin schema
     taste: { 
-        type: tasteSchema, 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Taste',
         required: true 
-    }, // Embed the taste schema
-    relatedCheeses: [relatedCheeseSchema], // Embed the related cheese schema as an array
+    }, // Reference the taste schema
+    relatedCheeses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'RelatedCheese'
+    }], // Reference the related cheese schema as an array
     ingredients: { 
         type: [String], 
-        validate: {
-            validator: function(v) {
-                return Array.isArray(v) && v.length > 0;
-            },
-            message: 'There must be at least one ingredient.'
-        }
+        required: true, // Ensures the array is present and contains at least one ingredient
+        validate: [array => array.length > 0, 'There must be at least one ingredient.'] // Simplified validation
     },
     production: {
         method: { 

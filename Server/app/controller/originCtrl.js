@@ -1,13 +1,13 @@
-const mongoose = require('mongoose'); // Importing Mongoose.
-const Cheese = require('../models/cheeseModel'); // Importing the Cheese model.
+const mongoose = require('mongoose');
+const Origin = require('../models/originSchema'); // Import the Origin model
 
-const getAllCheeseOrigins = async (req, res) => { // Function to get all cheese origins.
+// Function to get all cheese origins
+const getAllCheeseOrigins = async (req, res) => {
     try {
-        const cheeses = await Cheese.find({}); 
-        const origins = cheeses.map(cheese => cheese.origin);
+        const origins = await Origin.find({}); // Find all origins in the database
         res.status(200).json({
-            data: origins,
             success: true,
+            data: origins,
             message: `${req.method} - Request made to origin endpoint`
         });
     } catch (error) {
@@ -18,26 +18,27 @@ const getAllCheeseOrigins = async (req, res) => { // Function to get all cheese 
     }
 };
 
-const getCheeseOriginById = async (req, res) => { // Function to get a specific cheese origin by its ID.
+// Function to get a specific cheese origin by its ID
+const getCheeseOriginById = async (req, res) => {
     try {
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) { 
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // Validate if the ID is a valid MongoDB ObjectID
             return res.status(400).json({
                 success: false,
                 message: 'Invalid ID format'
             });
         }
 
-        const cheese = await Cheese.findById(req.params.id); 
-        if (!cheese) {
+        const origin = await Origin.findById(req.params.id); // Find origin by ID
+        if (!origin) {
             return res.status(404).json({
                 success: false,
-                message: 'Cheese not found'
+                message: 'Origin not found'
             });
         }
 
         res.status(200).json({
-            data: cheese.origin,
             success: true,
+            data: origin,
             message: `${req.method} - Request made to origin endpoint with id ${req.params.id}`
         });
     } catch (error) {

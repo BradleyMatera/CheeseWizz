@@ -1,6 +1,6 @@
-// Define the related cheese schema
 const mongoose = require('mongoose');
 
+// Define the related cheese schema
 const relatedCheeseSchema = new mongoose.Schema({
     name: { 
         type: String, 
@@ -15,4 +15,4 @@ const relatedCheeseSchema = new mongoose.Schema({
     }
 });
 
-module.exports = relatedCheeseSchema;
+module.exports = mongoose.model('RelatedCheese', relatedCheeseSchema); // Exporting as a Mongoose model

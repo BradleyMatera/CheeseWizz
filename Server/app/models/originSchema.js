@@ -24,4 +24,4 @@ const originSchema = new mongoose.Schema({
     }
 });
 
-module.exports = originSchema;
+module.exports = mongoose.model('Origin', originSchema); // Exporting as a Mongoose model

@@ -7,7 +7,7 @@ const {
     updateCheeseById,
     deleteCheeseByID
 } = require("../controller/bigCtrl");
-const {
+const {                             
     getAllCheeseOrigins,
     getCheeseOriginById
 } = require("../controller/originCtrl");
@@ -15,9 +15,10 @@ const {
     getAllCheeseTastes,
     getCheeseTasteById
 } = require("../controller/tasteCtrl");
-const { getAllRelatedCheeses, 
-        getRelatedCheeseById
- } = require("../controller/relatedCtrl");
+const {
+    getAllRelatedCheeses,
+    getRelatedCheeseById
+} = require("../controller/relatedCtrl");
 // Cheese routes
 router.get('/cheeses', getAllCheeseTypes);        // GET all cheese types
 router.get('/cheeses/:id', getCheeseTypeById);    // GET cheese by ID
