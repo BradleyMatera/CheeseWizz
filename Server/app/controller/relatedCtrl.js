@@ -103,23 +103,30 @@ const updateRelatedCheeseById = async (req, res) => {
             });
         }
 
-        const updatedRelatedCheese = await RelatedCheese.findByIdAndUpdate(req.params.id, req.body, { new: true })
-            .populate({
-                path: 'cheese',
-                select: 'name age nutrition origin taste relatedCheeses',
-                populate: [
-                    { path: 'origin', select: 'country region village history' },
-                    { path: 'taste', select: 'flavor texture aroma pairings' },
-                    { path: 'relatedCheeses', select: 'name relationType' }
-                ]
-            });
+// Update the related cheese document and populate related fields for detailed response
+const updatedRelatedCheese = await RelatedCheese.findByIdAndUpdate(
+    req.params.id, // The ID of the related cheese to update, taken from the request parameters
+    req.body, // The data to update in the related cheese document
+    { new: true } // Return the updated document after the operation
+)
+.populate({
+    path: 'cheese', // Populate the 'cheese' field
+    select: 'name age nutrition origin taste relatedCheeses', // Select specific fields to include
+    populate: [
+        { path: 'origin', select: 'country region village history' }, // Populate and select fields for 'origin'
+        { path: 'taste', select: 'flavor texture aroma pairings' }, // Populate and select fields for 'taste'
+        { path: 'relatedCheeses', select: 'name relationType' } // Populate and select fields for 'relatedCheeses'
+    ]
+});
 
-        if (!updatedRelatedCheese) {
-            return res.status(404).json({
-                success: false,
-                message: Messages.CHEESE_NOT_FOUND
-            });
-        }
+// Logical NOT operator (!) to check if the related cheese was not found, 
+// returning a 404 status if the document does not exist in the database
+if (!updatedRelatedCheese) {
+    return res.status(404).json({
+        success: false, // Indicate the request failed
+        message: Messages.CHEESE_NOT_FOUND // Message indicating the cheese was not found
+    });
+}
 
         res.status(200).json({
             success: true,
