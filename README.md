@@ -132,7 +132,13 @@ To run the server and see the CheeseWizz API in action:
    npm test
    ```
 
-Experience the cheesy goodness through your terminal and API endpoints!
+## 🛠 Relevant Mongoose Documentation Links:
+
+1. **Defining a Schema and Model**: [Schemas and Models](https://mongoosejs.com/docs/guide.html#definition)
+2. **Finding Documents**: [Queries](https://mongoosejs.com/docs/queries.html)
+3. **Updating Documents**: [FindOneAndUpdate](https://mongoosejs.com/docs/tutorials/findoneandupdate.html)
+4. **Error Handling and Validation**: [Validation](https://mongoosejs.com/docs/validation.html)
+5. **Creating and Deleting Documents**: [CRUD Operations](https://mongoosejs.com/docs/models.html#constructing-documents)
 
 ## 📄 License
 
