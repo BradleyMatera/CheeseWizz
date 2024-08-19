@@ -1,7 +1,3 @@
-Here's the updated README with all the relevant Mongoose documentation links included:
-
----
-
 # 🧀 CheeseWizz Server
 
 Welcome to the **CheeseWizz** project! This project is a cheese-themed API that serves all your cheesy needs, from origins and types to math operations involving cheese! 🍕🧀
@@ -117,17 +113,6 @@ CheeseWizz/
 
 ### 11. **GET /api/v1/relatedCheeses/:id**
    - Retrieves a specific related cheese by its ID.
-
-## 📚 Mongoose Documentation Links
-
-### Key Concepts:
-1. **Defining a Schema and Model**: [Schemas and Models](https://mongoosejs.com/docs/guide.html#definition)
-2. **Finding Documents**: [Queries](https://mongoosejs.com/docs/queries.html)
-3. **Updating Documents**: [FindOneAndUpdate](https://mongoosejs.com/docs/tutorials/findoneandupdate.html)
-4. **Error Handling and Validation**: [Validation](https://mongoosejs.com/docs/validation.html)
-5. **Creating and Deleting Documents**: [CRUD Operations](https://mongoosejs.com/docs/models.html#constructing-documents)
-
-These links will help you understand how to effectively work with Mongoose to manage the cheese data.
 
 ## 🧪 Testing
 
