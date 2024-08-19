@@ -1,0 +1,898 @@
+{
+	"id": "15558eab-af85-46fd-82ca-99167076816e",
+	"name": "CheeseDatabaseTest",
+	"timestamp": "2024-08-19T21:27:51.485Z",
+	"collection_id": "36192332-df86137b-a96a-4537-b2af-8a64ae8189f5",
+	"folder_id": "36192332-735190df-ccd1-4d37-bbef-fef819a35e64",
+	"environment_id": "0",
+	"totalPass": 71,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2024-08-19T21:27:51.019Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "b64f8a2d-acfe-4b6b-b94f-c8bb68d0c7d3",
+			"name": "Post to AllCheeseTypes ",
+			"url": "localhost:3000/api/v1/cheeses",
+			"time": 13,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body contains success message": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body contains success message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				13
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body contains success message": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "ccb87421-4a32-487e-ac12-2f06b5016685",
+			"name": "Get Current Cheese Data",
+			"url": "localhost:3000/api/v1/cheeses",
+			"time": 12,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Each cheese entry has required fields": true
+			},
+			"testPassFailCounts": {
+				"Each cheese entry has required fields": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Each cheese entry has required fields": true
+				}
+			]
+		},
+		{
+			"id": "751056ac-0f4a-4d69-95a9-00d16f2b632d",
+			"name": "Get All Cheese Types",
+			"url": "localhost:3000/api/v1/cheeses/66c37e810d67c95844542788",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content-Type header is application/json": true,
+				"Validate the data object structure": true,
+				"Validate the production, nutrition, origin, and taste objects": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the data object structure": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the production, nutrition, origin, and taste objects": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				6
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content-Type header is application/json": true,
+					"Validate the data object structure": true,
+					"Validate the production, nutrition, origin, and taste objects": true
+				}
+			]
+		},
+		{
+			"id": "17b5ac34-2611-4494-9105-e31ef52cb9dd",
+			"name": "get cheese by id",
+			"url": "localhost:3000/api/v1/cheeses/66c37e810d67c95844542788",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response contains correct cheese data": true,
+				"Origin and taste fields are non-empty": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains correct cheese data": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Origin and taste fields are non-empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response contains correct cheese data": true,
+					"Origin and taste fields are non-empty": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "06a25919-f006-4d70-b8b3-995c92dd75c0",
+			"name": "PUT Cheese DataById",
+			"url": "localhost:3000/api/v1/cheeses/66c37e810d67c95844542788",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response contains success confirmation": true,
+				"Response contains updated cheese data": true,
+				"Response message confirms update": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains success confirmation": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains updated cheese data": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response message confirms update": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				6
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response contains success confirmation": true,
+					"Response contains updated cheese data": true,
+					"Response message confirms update": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "26d3fbb8-1b34-46e4-af01-1244158d80b0",
+			"name": "Post tastes test",
+			"url": "localhost:3000/api/v1/tastes",
+			"time": 4,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Response contains created taste data": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains created taste data": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Response contains created taste data": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "0defa477-8d34-4998-9125-83eb6a3b9d0b",
+			"name": "Get tastes test",
+			"url": "localhost:3000/api/v1/tastes",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response contains an array of tastes": true,
+				"Each taste entry has required fields": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains an array of tastes": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Each taste entry has required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				6
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response contains an array of tastes": true,
+					"Each taste entry has required fields": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "725cec82-a1fb-483a-aaaf-26b6eac8f009",
+			"name": "get tastes by id",
+			"url": "localhost:3000/api/v1/tastes/66c2d3ee3cb00458f18b1a89",
+			"time": 4,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content-Type header is application/json": true,
+				"Response has the required fields - success, data, message": true,
+				"Data object has the correct structure": true,
+				"Pairings array contains valid strings": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields - success, data, message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Data object has the correct structure": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Pairings array contains valid strings": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content-Type header is application/json": true,
+					"Response has the required fields - success, data, message": true,
+					"Data object has the correct structure": true,
+					"Pairings array contains valid strings": true
+				}
+			]
+		},
+		{
+			"id": "c6086f0b-fa05-4588-9b56-63a5d9d5e336",
+			"name": "putbyid tastes test",
+			"url": "localhost:3000/api/v1/tastes/66c37e81638e473bfe113e0c",
+			"time": 4,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content-Type is application/json": true,
+				"Success field is present and set to true": true,
+				"Data object contains required fields": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Success field is present and set to true": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Data object contains required fields": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content-Type is application/json": true,
+					"Success field is present and set to true": true,
+					"Data object contains required fields": true
+				}
+			]
+		},
+		{
+			"id": "0a3320d3-5cff-4811-9612-5b0c4e816648",
+			"name": "Post Origin",
+			"url": "localhost:3000/api/v1/origins",
+			"time": 6,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Response contains created origin data": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains created origin data": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				6
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Response contains created origin data": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "99c78e43-a88f-494a-bc10-aa23ebda275c",
+			"name": "Get Origin",
+			"url": "localhost:3000/api/v1/origins",
+			"time": 8,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response contains an array of origins": true,
+				"Each origin entry has required fields": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains an array of origins": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Each origin entry has required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				8
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response contains an array of origins": true,
+					"Each origin entry has required fields": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "cac076b5-8d11-4600-bd40-94dd1e77452d",
+			"name": "Get Originbyid",
+			"url": "localhost:3000/api/v1/origins/66c2d3873cb00458f18b1a85",
+			"time": 4,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content-Type header is set to application/json": true,
+				"Success is a boolean value": true,
+				"Data object contains required fields": true,
+				"Cheeses, relatedCheeses, and tastes arrays are present and empty": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is set to application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Success is a boolean value": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Data object contains required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Cheeses, relatedCheeses, and tastes arrays are present and empty": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content-Type header is set to application/json": true,
+					"Success is a boolean value": true,
+					"Data object contains required fields": true,
+					"Cheeses, relatedCheeses, and tastes arrays are present and empty": true
+				}
+			]
+		},
+		{
+			"id": "f8ba0197-c8ec-40af-bf6c-2c5102904077",
+			"name": "Put Origin by id",
+			"url": "localhost:3000/api/v1/origins/66c2d3873cb00458f18b1a85",
+			"time": 4,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content type is application/json": true,
+				"Success key is present and has a boolean value": true,
+				"Data object is present in the response": true,
+				"Data object contains required keys": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content type is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Success key is present and has a boolean value": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Data object is present in the response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Data object contains required keys": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content type is application/json": true,
+					"Success key is present and has a boolean value": true,
+					"Data object is present in the response": true,
+					"Data object contains required keys": true
+				}
+			]
+		},
+		{
+			"id": "6c7bb7ec-addf-45a1-b483-46d6b6684e48",
+			"name": "Post relatedCheeses",
+			"url": "localhost:3000/api/v1/relatedCheeses",
+			"time": 5,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Response contains created related cheese data": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains created related cheese data": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				5
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Response contains created related cheese data": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "e2ef6ab6-1c68-4241-9c16-a340b2721eda",
+			"name": "Get relatedCheeses",
+			"url": "localhost:3000/api/v1/relatedCheeses",
+			"time": 8,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response contains an array of related cheeses": true,
+				"Each related cheese entry has required fields": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains an array of related cheeses": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Each related cheese entry has required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				8
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response contains an array of related cheeses": true,
+					"Each related cheese entry has required fields": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "b386d691-74bf-4825-a926-d7aefb116fd4",
+			"name": "get relatedCheeses by id",
+			"url": "localhost:3000/api/v1/relatedCheeses/66c2d8d33cb00458f18b1ab3",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content-Type is application/json": true,
+				"Validate success field is present and has a boolean value": true,
+				"Data object contains expected fields": true,
+				"Ensure the 'taste' object contains the 'pairings' array and verify its structure": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate success field is present and has a boolean value": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Data object contains expected fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Ensure the 'taste' object contains the 'pairings' array and verify its structure": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content-Type is application/json": true,
+					"Validate success field is present and has a boolean value": true,
+					"Data object contains expected fields": true,
+					"Ensure the 'taste' object contains the 'pairings' array and verify its structure": true
+				}
+			]
+		},
+		{
+			"id": "06c88cf7-5f76-48b6-9b71-9cb5b6f0464c",
+			"name": "put relatedCheeses byid",
+			"url": "localhost:3000/api/v1/relatedCheeses/66c2d8d33cb00458f18b1ab3",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content-Type header is application/json": true,
+				"Success field in the response should exist and be true": true,
+				"Ensure that the data object contains the required fields": true,
+				"Pairings array inside the taste object is empty": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Success field in the response should exist and be true": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Ensure that the data object contains the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Pairings array inside the taste object is empty": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content-Type header is application/json": true,
+					"Success field in the response should exist and be true": true,
+					"Ensure that the data object contains the required fields": true,
+					"Pairings array inside the taste object is empty": true
+				}
+			]
+		},
+		{
+			"id": "f65f6396-8c00-407e-aaef-e12878ed4f1c",
+			"name": "Delete DataById",
+			"url": "localhost:3000/api/v1/cheeses/66c3b5f408daa66235c6cd9e",
+			"time": 3,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Response status code is either 200 or 404": true,
+				"Response structure is correct": true,
+				"Response content is correct based on status": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is either 200 or 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response structure is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response content is correct based on status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Response status code is either 200 or 404": true,
+					"Response structure is correct": true,
+					"Response content is correct based on status": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 102,
+	"collection": {
+		"requests": [
+			{
+				"id": "b64f8a2d-acfe-4b6b-b94f-c8bb68d0c7d3",
+				"method": "POST"
+			},
+			{
+				"id": "ccb87421-4a32-487e-ac12-2f06b5016685",
+				"method": "GET"
+			},
+			{
+				"id": "751056ac-0f4a-4d69-95a9-00d16f2b632d",
+				"method": "GET"
+			},
+			{
+				"id": "17b5ac34-2611-4494-9105-e31ef52cb9dd",
+				"method": "GET"
+			},
+			{
+				"id": "06a25919-f006-4d70-b8b3-995c92dd75c0",
+				"method": "PUT"
+			},
+			{
+				"id": "26d3fbb8-1b34-46e4-af01-1244158d80b0",
+				"method": "POST"
+			},
+			{
+				"id": "0defa477-8d34-4998-9125-83eb6a3b9d0b",
+				"method": "GET"
+			},
+			{
+				"id": "725cec82-a1fb-483a-aaaf-26b6eac8f009",
+				"method": "GET"
+			},
+			{
+				"id": "c6086f0b-fa05-4588-9b56-63a5d9d5e336",
+				"method": "PUT"
+			},
+			{
+				"id": "0a3320d3-5cff-4811-9612-5b0c4e816648",
+				"method": "POST"
+			},
+			{
+				"id": "99c78e43-a88f-494a-bc10-aa23ebda275c",
+				"method": "GET"
+			},
+			{
+				"id": "cac076b5-8d11-4600-bd40-94dd1e77452d",
+				"method": "GET"
+			},
+			{
+				"id": "f8ba0197-c8ec-40af-bf6c-2c5102904077",
+				"method": "PUT"
+			},
+			{
+				"id": "6c7bb7ec-addf-45a1-b483-46d6b6684e48",
+				"method": "POST"
+			},
+			{
+				"id": "e2ef6ab6-1c68-4241-9c16-a340b2721eda",
+				"method": "GET"
+			},
+			{
+				"id": "b386d691-74bf-4825-a926-d7aefb116fd4",
+				"method": "GET"
+			},
+			{
+				"id": "06c88cf7-5f76-48b6-9b71-9cb5b6f0464c",
+				"method": "PUT"
+			},
+			{
+				"id": "f65f6396-8c00-407e-aaef-e12878ed4f1c",
+				"method": "DELETE"
+			}
+		]
+	}
+}

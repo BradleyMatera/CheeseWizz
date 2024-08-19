@@ -18,16 +18,16 @@ const cheeseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Origin',
         required: true 
-    },
+    }, 
     taste: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Taste',
         required: true 
-    },
+    }, 
     relatedCheeses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'RelatedCheese'
-    }],
+    }], 
     ingredients: { 
         type: [String], 
         required: true, 
@@ -83,6 +83,4 @@ const cheeseSchema = new mongoose.Schema({
     }
 });
 
-const Cheese = mongoose.model('Cheese', cheeseSchema);
-
-module.exports = Cheese;
+module.exports = mongoose.model('Cheese', cheeseSchema);

@@ -1,29 +1,32 @@
-const mongoose = require('mongoose');
 const Taste = require('../models/tasteSchema');
 const Cheese = require('../models/cheeseModel');
+const Messages = require('../utils/messages');
+const mongoose = require('mongoose');
 
-// Get all cheese tastes
 const getAllCheeseTastes = async (req, res) => {
     try {
         const tastes = await Taste.find({})
             .populate({
                 path: 'cheeses',
-                select: 'name age origin',
-                populate: { path: 'origin', select: 'country region village history' }
-            })
-            .populate({
-                path: 'relatedCheeses',
-                select: 'name relationType'
+                select: 'name age nutrition origin',
+                populate: {
+                    path: 'origin',
+                    select: 'country region'
+                }
             });
+
         res.status(200).json({
             success: true,
+            count: tastes.length,
             data: tastes,
-            message: `${req.method} - Request made to taste endpoint`
+            message: Messages.CHEESE_RETRIEVED
         });
     } catch (error) {
+        console.error('Error in getAllCheeseTastes:', error);
         res.status(500).json({
             success: false,
-            message: 'Server Error'
+            message: Messages.SERVER_ERROR,
+            error: error.message
         });
     }
 };
@@ -34,37 +37,34 @@ const getCheeseTasteById = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({
                 success: false,
-                message: 'Invalid ID format'
+                message: Messages.INVALID_ID
             });
         }
 
         const taste = await Taste.findById(req.params.id)
             .populate({
                 path: 'cheeses',
-                select: 'name age origin',
-                populate: { path: 'origin', select: 'country region village history' }
-            })
-            .populate({
-                path: 'relatedCheeses',
-                select: 'name relationType'
+                populate: [
+                    { path: 'origin', select: 'country region' }
+                ]
             });
 
         if (!taste) {
             return res.status(404).json({
                 success: false,
-                message: 'Taste not found'
+                message: Messages.CHEESE_NOT_FOUND
             });
         }
 
         res.status(200).json({
             success: true,
             data: taste,
-            message: `${req.method} - Request made to taste endpoint with id ${req.params.id}`
+            message: Messages.CHEESE_RETRIEVED
         });
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Server Error'
+            message: Messages.SERVER_ERROR
         });
     }
 };
@@ -72,12 +72,21 @@ const getCheeseTasteById = async (req, res) => {
 // Create a new taste entry
 const createTaste = async (req, res) => {
     try {
-        const taste = new Taste(req.body);
+        const { cheeses, ...tasteData } = req.body;
+
+        // Convert the references to valid ObjectIds, assuming that the incoming data uses names or other identifiers
+        const cheeseIds = await Cheese.find({ name: { $in: cheeses.map(c => c.name) } }).select('_id');
+
+        const taste = new Taste({
+            ...tasteData,
+            cheeses: cheeseIds
+        });
+
         await taste.save();
         res.status(201).json({
             success: true,
             data: taste,
-            message: 'Taste created successfully'
+            message: Messages.CHEESE_CREATED
         });
     } catch (error) {
         res.status(400).json({
@@ -93,27 +102,31 @@ const updateTasteById = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({
                 success: false,
-                message: 'Invalid ID format'
+                message: Messages.INVALID_ID
             });
         }
 
+        // Ensure you're passing an object and not a string
         const updatedTaste = await Taste.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
         if (!updatedTaste) {
             return res.status(404).json({
                 success: false,
-                message: 'Taste not found'
+                message: Messages.CHEESE_NOT_FOUND
             });
         }
 
         res.status(200).json({
             success: true,
             data: updatedTaste,
-            message: 'Taste updated successfully'
+            message: Messages.CHEESE_UPDATED
         });
     } catch (error) {
+        console.error('Error in updateTasteById:', error);
         res.status(500).json({
             success: false,
-            message: 'Server Error'
+            message: Messages.SERVER_ERROR,
+            error: error.message
         });
     }
 };
@@ -124,7 +137,7 @@ const deleteTasteById = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({
                 success: false,
-                message: 'Invalid ID format'
+                message: Messages.INVALID_ID
             });
         }
 
@@ -132,18 +145,18 @@ const deleteTasteById = async (req, res) => {
         if (!deletedTaste) {
             return res.status(404).json({
                 success: false,
-                message: 'Taste not found'
+                message: Messages.CHEESE_NOT_FOUND
             });
         }
 
         res.status(200).json({
             success: true,
-            message: 'Taste deleted successfully'
+            message: Messages.CHEESE_DELETED
         });
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Server Error'
+            message: Messages.SERVER_ERROR
         });
     }
 };

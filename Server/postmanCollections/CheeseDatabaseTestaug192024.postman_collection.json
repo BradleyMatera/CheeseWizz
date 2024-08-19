@@ -1,0 +1,1308 @@
+{
+	"info": {
+		"_postman_id": "df86137b-a96a-4537-b2af-8a64ae8189f5",
+		"name": "CheeseDatabaseTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36192332",
+		"_collection_link": "https://aws-api-gateway-3798.postman.co/workspace/AWS-API-Gateway~aefa8367-fe83-4c17-8419-ad9418d7cf82/collection/36192332-df86137b-a96a-4537-b2af-8a64ae8189f5?action=share&source=collection_link&creator=36192332"
+	},
+	"item": [
+		{
+			"name": "Tested/Working",
+			"item": []
+		},
+		{
+			"name": "ReadToGo",
+			"item": [
+				{
+					"name": "Post to AllCheeseTypes ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Body contains success message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Cheese created successfully\");",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"American Cheese\",  // The name of the cheese being added, which is stored as a simple string in the database.\n  \"age\": 1,  // The age of the cheese, stored as a number in the database.\n  \n  \"origin\": {  // The origin object, which contains details about where the cheese comes from.\n    \"country\": \"United States\",  // The country field is stored as a string in the database.\n    \"region\": \"Wisconsin\",  // The region within the country, stored as a string.\n    \"village\": \"Monroe\",  // The specific village within the region, also stored as a string.\n    \"history\": \"American cheese is a processed cheese with a history dating back to the 1910s, known for its smooth, meltable texture and widespread use in fast food.\"  // A string containing historical details about the origin of the cheese.\n  },\n  \n  \"taste\": {  // The taste object, containing sensory details about the cheese.\n    \"flavor\": \"Mild and creamy with a slightly salty taste\",  // The flavor field is stored as a string.\n    \"texture\": \"Smooth and easily meltable\",  // The texture of the cheese, stored as a string.\n    \"aroma\": \"Mild with a hint of butter\",  // The aroma of the cheese, stored as a string.\n    \"pairings\": [\"Burgers\", \"Grilled sandwiches\", \"Tomato soup\"]  // The pairings field is an array of strings, representing food items that pair well with the cheese.\n  },\n  \n  \"ingredients\": [  // The ingredients field, an array of strings listing what goes into making the cheese.\n    \"Milk\",  // A simple string representing an ingredient.\n    \"Salt\",\n    \"Emulsifiers\",\n    \"Food Coloring\",\n    \"Cultures\"\n  ],\n  \n  \"production\": {  // The production object contains details about how the cheese is made.\n    \"method\": \"Processed cheese made by combining cheese with other ingredients to create a smooth texture.\",  // A string describing the method used to produce the cheese.\n    \"aged\": \"fresh\",  // The aging process of the cheese, stored as a string.\n    \"location\": \"Monroe, Wisconsin\"  // The location where the cheese is produced, stored as a string.\n  },\n  \n  \"nutrition\": {  // The nutrition object contains nutritional information about the cheese.\n    \"calories\": 300,  // The number of calories in the cheese, stored as a number.\n    \"fat\": \"23g\",  // The amount of fat in the cheese, stored as a string.\n    \"protein\": \"15g\",  // The amount of protein in the cheese, stored as a string.\n    \"carbohydrates\": \"4g\"  // The amount of carbohydrates in the cheese, stored as a string.\n  },\n  \n  \"awards\": [  // The awards field, an array of objects representing awards the cheese has won.\n    {\n      \"name\": \"Best Processed Cheese\",  // The name of the award, stored as a string.\n      \"event\": \"National Cheese Awards\",  // The event at which the award was won, stored as a string.\n      \"year\": 2022  // The year the award was won, stored as a number.\n    }\n  ],\n  \n  \"relatedCheeses\": [  // The relatedCheeses field, an array of objects representing cheeses related to this one.\n    {\n      \"name\": \"Cheddar\",  // The name of a related cheese, stored as a string.\n      \"relationType\": \"similar\"  // The type of relationship to the main cheese, stored as a string.\n    },\n    {\n      \"name\": \"Colby\",  // Another related cheese.\n      \"relationType\": \"complementary\"  // The relationship type.\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/cheeses",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cheeses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current Cheese Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Each cheese entry has required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.data.forEach(function(cheese) {",
+									"        pm.expect(cheese).to.have.property('name');",
+									"        pm.expect(cheese).to.have.property('age');",
+									"        ",
+									"        // Check for origin (it might be nested or optional)",
+									"        if (cheese.origin) {",
+									"            pm.expect(cheese.origin).to.be.an('object');",
+									"        } else if (cheese._id) {",
+									"            console.log(\"Origin not found for cheese with ID: \" + cheese._id);",
+									"        }",
+									"        ",
+									"        // Check for taste (it might be nested or optional)",
+									"        if (cheese.taste) {",
+									"            pm.expect(cheese.taste).to.be.an('object');",
+									"        } else if (cheese._id) {",
+									"            console.log(\"Taste not found for cheese with ID: \" + cheese._id);",
+									"        }",
+									"",
+									"        // Check for production (based on your example)",
+									"        pm.expect(cheese).to.have.property('production');",
+									"        pm.expect(cheese.production).to.be.an('object');",
+									"",
+									"        // Add any other required fields here",
+									"        pm.expect(cheese).to.have.property('ingredients');",
+									"        pm.expect(cheese).to.have.property('nutrition');",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/cheeses",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cheeses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Cheese Types",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the data object structure\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.data.production).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.data.nutrition).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.data.origin).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.data.taste).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.data.relatedCheeses).to.exist.and.to.be.an('array');",
+									"    pm.expect(responseData.data.ingredients).to.exist.and.to.be.an('array');",
+									"    pm.expect(responseData.data.awards).to.exist.and.to.be.an('array');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the production, nutrition, origin, and taste objects\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data.production).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.data.nutrition).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.data.origin).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.data.taste).to.exist.and.to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/cheeses/66c37e810d67c95844542788",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cheeses",
+								"66c37e810d67c95844542788"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get cheese by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains correct cheese data\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.have.property('name');",
+									"    pm.expect(jsonData.data).to.have.property('age');",
+									"    pm.expect(jsonData.data).to.have.property('origin');",
+									"    pm.expect(jsonData.data).to.have.property('taste');",
+									"});",
+									"",
+									"pm.test(\"Origin and taste fields are non-empty\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.origin).to.not.be.empty;",
+									"    pm.expect(jsonData.data.taste).to.not.be.empty;",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/cheeses/66c37e810d67c95844542788",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cheeses",
+								"66c37e810d67c95844542788"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Cheese DataById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains success confirmation\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Response contains updated cheese data\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.be.an('object');",
+									"    pm.expect(jsonData.data).to.have.property('name');",
+									"    pm.expect(jsonData.data).to.have.property('age');",
+									"    pm.expect(jsonData.data).to.have.property('origin');",
+									"    pm.expect(jsonData.data).to.have.property('taste');",
+									"});",
+									"",
+									"pm.test(\"Response message confirms update\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include('updated successfully');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"American Cheese\",\n    \"age\": 1,\n    \"origin\": {\n        \"country\": \"United States\",\n        \"region\": \"Wisconsin\",\n        \"village\": \"Monroe\",\n        \"history\": \"American cheese is a processed cheese with a history dating back to the 1910s, known for its smooth, meltable texture and widespread use in fast food.\"\n    },\n    \"taste\": {\n        \"texture\": \"Smooth and easily meltable\",\n        \"flavor\": \"Mild and creamy with a slightly salty taste\",\n        \"aroma\": \"Mild with a hint of butter\",\n        \"pairings\": [\n            \"Burgers\",\n            \"Grilled sandwiches\",\n            \"Tomato soup\"\n        ]\n    },\n    \"ingredients\": [\n        \"Milk\",\n        \"Salt\",\n        \"Emulsifiers\",\n        \"Food Coloring\",\n        \"Cultures\"\n    ],\n    \"production\": {\n        \"method\": \"Processed cheese made by combining cheese with other ingredients to create a smooth texture.\",\n        \"aged\": \"fresh\",\n        \"location\": \"Monroe, Wisconsin\"\n    },\n    \"awards\": [\n        {\n            \"name\": \"Best Processed Cheese\",\n            \"event\": \"National Cheese Awards\",\n            \"year\": 2022\n        }\n    ],\n    \"nutrition\": {\n        \"calories\": 300,\n        \"fat\": \"23g\",\n        \"protein\": \"15g\",\n        \"carbohydrates\": \"4g\"\n    },\n    \"relatedCheeses\": [\n        {\n            \"name\": \"Cheddar\",\n            \"relationType\": \"similar\"\n        },\n        {\n            \"name\": \"Colby\",\n            \"relationType\": \"complementary\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/cheeses/66c37e810d67c95844542788",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cheeses",
+								"66c37e810d67c95844542788"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post tastes test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response contains created taste data\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.have.property('flavor');",
+									"    pm.expect(jsonData.data).to.have.property('texture');",
+									"    pm.expect(jsonData.data).to.have.property('aroma');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"flavor\": \"Buttery and slightly nutty\",\n  \"texture\": \"Smooth and creamy\",\n  \"aroma\": \"Mild, with a hint of caramel\",\n  \"pairings\": [\"Fruits\", \"Nuts\", \"Wine\"],\n  \"cheeses\": [\n    { \"name\": \"Gouda\" },\n    { \"name\": \"Edam\" }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/tastes",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tastes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get tastes test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains an array of tastes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.be.an('array');",
+									"});",
+									"",
+									"pm.test(\"Each taste entry has required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.data.forEach(function(taste) {",
+									"        pm.expect(taste).to.have.property('flavor');",
+									"        pm.expect(taste).to.have.property('texture');",
+									"        pm.expect(taste).to.have.property('aroma');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/tastes",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tastes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get tastes by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+									"});",
+									"",
+									"pm.test(\"Response has the required fields - success, data, message\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success');",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});",
+									"",
+									"pm.test(\"Data object has the correct structure\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.be.an('object');",
+									"    pm.expect(jsonData.data).to.have.property('_id');",
+									"    pm.expect(jsonData.data).to.have.property('flavor');",
+									"    pm.expect(jsonData.data).to.have.property('texture');",
+									"    pm.expect(jsonData.data).to.have.property('aroma');",
+									"    pm.expect(jsonData.data).to.have.property('pairings').that.is.an('array');",
+									"});",
+									"",
+									"pm.test(\"Pairings array contains valid strings\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.pairings).to.be.an('array').that.is.not.empty;",
+									"    jsonData.data.pairings.forEach(function(pairing) {",
+									"        pm.expect(pairing).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Pairing should not be an empty string\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/tastes/66c2d3ee3cb00458f18b1a89",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tastes",
+								"66c2d3ee3cb00458f18b1a89"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "putbyid tastes test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Success field is present and set to true\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.have.property('success', true);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Data object contains required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.data).to.be.an('object');",
+									"    pm.expect(responseData.data).to.have.property('texture');",
+									"    pm.expect(responseData.data).to.have.property('flavor');",
+									"    pm.expect(responseData.data).to.have.property('aroma');",
+									"    pm.expect(responseData.data).to.have.property('cheeses');",
+									"    pm.expect(responseData.data).to.have.property('pairings');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"taste\": {\n    \"flavor\": \"Mild and creamy with a slightly salty taste\",\n    \"texture\": \"Smooth and easily meltable\",\n    \"aroma\": \"Mild with a hint of butter\",\n    \"pairings\": [\"Burgers\", \"Grilled sandwiches\", \"Tomato soup\"]\n  },\n  \"relatedCheeses\": [\n    {\n      \"name\": \"Cheddar\",\n      \"relationType\": \"similar\"\n    },\n    {\n      \"name\": \"Colby\",\n      \"relationType\": \"complementary\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/tastes/66c37e81638e473bfe113e0c",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tastes",
+								"66c37e81638e473bfe113e0c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Origin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response contains created origin data\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.have.property('country');",
+									"    pm.expect(jsonData.data).to.have.property('region');",
+									"    pm.expect(jsonData.data).to.have.property('village');",
+									"    pm.expect(jsonData.data).to.have.property('history');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"country\": \"Netherlands\",\n  \"region\": \"North Holland\",\n  \"village\": \"Gouda\",\n  \"history\": \"Gouda cheese has a rich history dating back to the 12th century.\",\n  \"cheeses\": [\n    { \"name\": \"Gouda\" },\n    { \"name\": \"Edam\" }\n  ],\n  \"relatedCheeses\": [\n    { \"name\": \"Edam\" },\n    { \"name\": \"Cheddar\" }\n  ],\n  \"tastes\": [\n    { \"flavor\": \"Buttery and slightly nutty\" },\n    { \"flavor\": \"Mild and creamy\" }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/origins",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"origins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Origin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains an array of origins\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.be.an('array');",
+									"});",
+									"",
+									"pm.test(\"Each origin entry has required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.data.forEach(function(origin) {",
+									"        pm.expect(origin).to.have.property('country');",
+									"        pm.expect(origin).to.have.property('region');",
+									"        pm.expect(origin).to.have.property('village');",
+									"        pm.expect(origin).to.have.property('history');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/origins",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"origins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Originbyid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is set to application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Success is a boolean value\", function () {",
+									"  const responseData = pm.response.json();",
+									"  pm.expect(responseData.success).to.be.a('boolean');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Data object contains required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.data).to.exist;",
+									"    pm.expect(responseData.data).to.have.property('country');",
+									"    pm.expect(responseData.data).to.have.property('region');",
+									"    pm.expect(responseData.data).to.have.property('village');",
+									"    pm.expect(responseData.data).to.have.property('history');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Cheeses, relatedCheeses, and tastes arrays are present and empty\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.have.property('data');",
+									"    pm.expect(responseData.data).to.be.an('object');",
+									"    ",
+									"    ['cheeses', 'relatedCheeses', 'tastes'].forEach((key) => {",
+									"        pm.expect(responseData.data).to.have.property(key).that.is.an('array').and.to.be.empty;",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/origins/66c2d3873cb00458f18b1a85",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"origins",
+								"66c2d3873cb00458f18b1a85"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Origin by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Success key is present and has a boolean value\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.have.property('success').that.is.a('boolean');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Data object is present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.have.property('data');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Data object contains required keys\", function () {",
+									"    const responseData = pm.response.json().data;",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.include.all.keys(\"cheeses\", \"relatedCheeses\", \"tastes\", \"_id\", \"country\", \"region\", \"village\", \"history\", \"__v\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"country\": \"France\",\n    \"region\": \"Normandy\",\n    \"village\": \"Camembert\",\n    \"history\": \"Camembert is a famous soft cheese originating from the Normandy region of France. It was first created in the late 18th century and has since become one of the most well-known French cheeses worldwide.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/origins/66c2d3873cb00458f18b1a85",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"origins",
+								"66c2d3873cb00458f18b1a85"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post relatedCheeses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response contains created related cheese data\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.have.property('name');",
+									"    pm.expect(jsonData.data).to.have.property('relationType');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Gouda (Related)\",\n  \"relationType\": \"similar\",\n  \"origin\": {\n    \"country\": \"Netherlands\",\n    \"region\": \"North Holland\",\n    \"village\": \"Gouda\"\n  },\n  \"taste\": {\n    \"flavor\": \"Buttery and slightly nutty\",\n    \"texture\": \"Smooth and creamy\",\n    \"aroma\": \"Mild, with a hint of caramel\"\n  },\n  \"pairings\": [\"Fruits\", \"Nuts\", \"Wine\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/relatedCheeses",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"relatedCheeses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get relatedCheeses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains an array of related cheeses\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.be.an('array');",
+									"});",
+									"",
+									"pm.test(\"Each related cheese entry has required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.data.forEach(function(relatedCheese) {",
+									"        pm.expect(relatedCheese).to.have.property('name');",
+									"        pm.expect(relatedCheese).to.have.property('relationType');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/relatedCheeses",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"relatedCheeses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get relatedCheeses by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate success field is present and has a boolean value\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData).to.have.property('success').that.is.a('boolean');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Data object contains expected fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.data).to.be.an('object');",
+									"    pm.expect(responseData.data).to.have.property('taste');",
+									"    pm.expect(responseData.data).to.have.property('relatedCheeses');",
+									"    pm.expect(responseData.data).to.have.property('pairings');",
+									"    pm.expect(responseData.data).to.have.property('_id');",
+									"    pm.expect(responseData.data).to.have.property('name');",
+									"    pm.expect(responseData.data).to.have.property('relationType');",
+									"    pm.expect(responseData.data).to.have.property('__v');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Ensure the 'taste' object contains the 'pairings' array and verify its structure\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data.taste).to.have.property('pairings').that.is.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/relatedCheeses/66c2d8d33cb00458f18b1ab3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"relatedCheeses",
+								"66c2d8d33cb00458f18b1ab3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put relatedCheeses byid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Success field in the response should exist and be true\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.success).to.exist.and.to.be.true;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Ensure that the data object contains the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.data).to.be.an('object');",
+									"    pm.expect(responseData.data).to.include.all.keys('taste', 'relatedCheeses', 'pairings', '_id', 'name', 'relationType', '__v');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Pairings array inside the taste object is empty\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData).to.have.property('data');",
+									"  pm.expect(responseData.data).to.have.property('taste');",
+									"  pm.expect(responseData.data.taste).to.have.property('pairings');",
+									"  pm.expect(responseData.data.taste.pairings).to.be.an('array').that.is.empty;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/relatedCheeses/66c2d8d33cb00458f18b1ab3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"relatedCheeses",
+								"66c2d8d33cb00458f18b1ab3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete DataById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is either 200 or 404\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+									"});",
+									"",
+									"pm.test(\"Response structure is correct\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success');",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});",
+									"",
+									"pm.test(\"Response content is correct based on status\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    ",
+									"    if (pm.response.code === 200) {",
+									"        pm.expect(jsonData.success).to.be.true;",
+									"        pm.expect(jsonData.message).to.include('deleted successfully');",
+									"        pm.expect(jsonData).to.have.property('id').that.equals(pm.variables.get(\"cheeseId\"));",
+									"    } else if (pm.response.code === 404) {",
+									"        pm.expect(jsonData.success).to.be.false;",
+									"        pm.expect(jsonData.message).to.equal('Cheese not found');",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/cheeses/{{cheeseId}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cheeses",
+								"{{cheeseId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "realenshiptesting",
+			"item": [
+				{
+					"name": "Get Current Cheese Data ById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status is 200 (OK)",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Verify the response contains the correct cheese data",
+									"pm.test(\"Response contains the correct cheese data\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.data).to.be.an('object');",
+									"    pm.expect(responseData.data).to.have.property('_id').and.to.equal(pm.collectionVariables.get(\"cheeseId\"));",
+									"    pm.expect(responseData.data).to.have.property('name');",
+									"    pm.expect(responseData.data).to.have.property('origin');",
+									"    pm.expect(responseData.data.origin).to.have.property('country');",
+									"    pm.expect(responseData.data.origin).to.have.property('region');",
+									"    pm.expect(responseData.data).to.have.property('taste');",
+									"    pm.expect(responseData.data.taste).to.have.property('flavor');",
+									"});",
+									"",
+									"// Ensure the origin and taste fields contain non-empty values",
+									"pm.test(\"Origin and taste fields are non-empty\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.data.origin.country).to.be.a('string').and.to.have.lengthOf.at.least(1);",
+									"    pm.expect(responseData.data.origin.region).to.be.a('string').and.to.have.lengthOf.at.least(1);",
+									"    pm.expect(responseData.data.taste.flavor).to.be.a('string').and.to.have.lengthOf.at.least(1);",
+									"});",
+									"",
+									"// Check that the response time is below 2000ms",
+									"pm.test(\"Response time is within acceptable range\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/cheeses/{{cheeseId}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cheeses",
+								"{{cheeseId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST data to Cheese Database",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status is 201 (Created)",
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Store the ID of the newly created cheese entry in the collection variable `cheeseId`",
+									"pm.test(\"Set cheeseId variable\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.collectionVariables.set(\"cheeseId\", responseData.data._id);",
+									"    pm.expect(pm.collectionVariables.get(\"cheeseId\")).to.eql(responseData.data._id);",
+									"});",
+									"",
+									"// Check that the response contains the required fields",
+									"pm.test(\"Response contains expected fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.data).to.have.property('name');",
+									"    pm.expect(responseData.data).to.have.property('age');",
+									"    pm.expect(responseData.data).to.have.property('origin');",
+									"    pm.expect(responseData.data).to.have.property('taste');",
+									"    pm.expect(responseData.data).to.have.property('_id');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Brie de Meaux\",\n    \"age\": 1,\n    \"origin\": {\n        \"country\": \"France\", \n        \"region\": \"Île-de-France\",\n        \"village\": \"Meaux\",\n        \"history\": \"Brie de Meaux has been made in the region around Meaux since the Middle Ages.\"\n    },\n    \"taste\": {\n        \"flavor\": \"Buttery, Rich\",\n        \"texture\": \"Creamy, Soft\",\n        \"aroma\": \"Mild, Nutty\",\n        \"pairings\": [\n            \"Champagne\",\n            \"Baguette\",\n            \"Fruits\"\n        ]\n    },\n    \"ingredients\": [\n        \"Cow's Milk\",\n        \"Salt\",\n        \"Rennet\"\n    ],\n    \"production\": {\n        \"method\": \"Traditionally produced with raw cow's milk and aged for about 1 month.\",\n        \"aged\": \"aged\", \n        \"location\": \"Île-de-France, France\"\n    },\n    \"awards\": [\n        {\n            \"name\": \"Gold Medal\",\n            \"event\": \"World Cheese Awards\",\n            \"year\": 2020\n        }\n    ],\n    \"nutrition\": {\n        \"calories\": 334,\n        \"fat\": \"28g\",\n        \"protein\": \"20g\",\n        \"carbohydrates\": \"1g\"\n    },\n    \"relatedCheeses\": [\n        {\n            \"name\": \"Camembert\",\n            \"relationType\": \"similar\"\n        },\n        {\n            \"name\": \"Roquefort\",\n            \"relationType\": \"complementary\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/cheeses/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cheeses",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "{{cheeseId}}",
+			"value": ""
+		},
+		{
+			"key": "cheeseId",
+			"value": ""
+		},
+		{
+			"key": "tastes",
+			"value": "*"
+		}
+	]
+}

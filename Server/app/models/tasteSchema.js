@@ -19,12 +19,14 @@ const tasteSchema = new mongoose.Schema({
         minLength: 3, 
         maxLength: 100 
     },
-    cheeses: [{
+    pairings: { 
+        type: [String], 
+        validate: [array => array.length > 0, 'There must be at least one pairing.']
+    },
+    cheeses: [{  
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Cheese'
     }]
 });
 
-const Taste = mongoose.model('Taste', tasteSchema);
-
-module.exports = Taste;
+module.exports = mongoose.model('Taste', tasteSchema);

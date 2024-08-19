@@ -21,12 +21,18 @@ const originSchema = new mongoose.Schema({
         type: String, 
         maxLength: 500 
     },
-    cheeses: [{
+    cheeses: [{  
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Cheese'
+        ref: 'Cheese' 
+    }],
+    relatedCheeses: [{  
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'RelatedCheese' 
+    }],
+    tastes: [{  
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Taste' 
     }]
 });
 
-const Origin = mongoose.model('Origin', originSchema);
-
-module.exports = Origin;
+module.exports = mongoose.model('Origin', originSchema);
