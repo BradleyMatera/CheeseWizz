@@ -84,30 +84,47 @@ const createOrigin = async (req, res) => {
     try {
         const { cheeses, relatedCheeses, tastes, ...originData } = req.body;
 
-        // Convert the references to valid ObjectIds, assuming that the incoming data uses names or other identifiers
-        const cheeseIds = await Cheese.find({ name: { $in: cheeses.map(c => c.name) } }).select('_id');
-        const relatedCheeseIds = await RelatedCheese.find({ name: { $in: relatedCheeses.map(rc => rc.name) } }).select('_id');
-        const tasteIds = await Taste.find({ flavor: { $in: tastes.map(t => t.flavor) } }).select('_id');
+// Convert the references to valid ObjectIds, assuming that the incoming data uses names or other identifiers
 
-        const origin = new Origin({
-            ...originData,
-            cheeses: cheeseIds,
-            relatedCheeses: relatedCheeseIds,
-            tastes: tasteIds
-        });
+// cheeseIds will store an array of ObjectId references to the Cheese model
+const cheeseIds = await Cheese.find({
+    name: { $in: cheeses.map(c => c.name) } // $in operator checks if the name exists in the provided array,$in operator selects the documents where the value of a field equals any value in the specified array.
+}).select('_id'); // select() is used here to only return the '_id' field
 
-        await origin.save();
-        res.status(201).json({
-            success: true,
-            data: origin,
-            message: Messages.CHEESE_CREATED
-        });
-    } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
-    }
+// relatedCheeseIds will store an array of ObjectId references to the RelatedCheese model
+const relatedCheeseIds = await RelatedCheese.find({
+    name: { $in: relatedCheeses.map(rc => rc.name) } // $in operator checks if the name exists in the provided array
+}).select('_id'); // select() is used here to only return the '_id' field
+
+// tasteIds will store an array of ObjectId references to the Taste model
+const tasteIds = await Taste.find({
+    flavor: { $in: tastes.map(t => t.flavor) } // $in operator checks if the flavor exists in the provided array
+}).select('_id'); // select() is used here to only return the '_id' field
+
+// Create a new Origin document with the provided data and associated ObjectIds
+const origin = new Origin({
+    ...originData, // Spread operator to include all properties from originData
+    cheeses: cheeseIds, // Assign the array of cheese ObjectIds to the cheeses field
+    relatedCheeses: relatedCheeseIds, // Assign the array of related cheese ObjectIds to the relatedCheeses field
+    tastes: tasteIds // Assign the array of taste ObjectIds to the tastes field
+});
+
+// Save the newly created Origin document to the database
+await origin.save();
+
+// Send a success response with the created Origin document and a success message
+res.status(201).json({
+    success: true, // Indicates the request was successful
+    data: origin, // The newly created Origin document
+    message: Messages.CHEESE_CREATED // Success message from the Messages module
+});
+} catch (error) {
+    // If there's an error, send a failure response with the error message
+    res.status(400).json({
+        success: false, // Indicates the request failed
+        message: error.message // The specific error message for debugging
+    });
+}
 };
 
 // Update an origin entry by ID

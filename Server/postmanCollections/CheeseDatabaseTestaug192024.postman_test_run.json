@@ -1,7 +1,7 @@
 {
-	"id": "15558eab-af85-46fd-82ca-99167076816e",
+	"id": "2018269f-270c-482f-8066-88d5d331a2a4",
 	"name": "CheeseDatabaseTest",
-	"timestamp": "2024-08-19T21:27:51.485Z",
+	"timestamp": "2024-08-19T23:53:15.748Z",
 	"collection_id": "36192332-df86137b-a96a-4537-b2af-8a64ae8189f5",
 	"folder_id": "36192332-735190df-ccd1-4d37-bbef-fef819a35e64",
 	"environment_id": "0",
@@ -9,14 +9,14 @@
 	"delay": 0,
 	"persist": true,
 	"status": "finished",
-	"startedAt": "2024-08-19T21:27:51.019Z",
+	"startedAt": "2024-08-19T23:53:15.274Z",
 	"totalFail": 0,
 	"results": [
 		{
 			"id": "b64f8a2d-acfe-4b6b-b94f-c8bb68d0c7d3",
 			"name": "Post to AllCheeseTypes ",
 			"url": "localhost:3000/api/v1/cheeses",
-			"time": 13,
+			"time": 16,
 			"responseCode": {
 				"code": 201,
 				"name": "Created"
@@ -41,7 +41,7 @@
 				}
 			},
 			"times": [
-				13
+				16
 			],
 			"allTests": [
 				{
@@ -55,7 +55,7 @@
 			"id": "ccb87421-4a32-487e-ac12-2f06b5016685",
 			"name": "Get Current Cheese Data",
 			"url": "localhost:3000/api/v1/cheeses",
-			"time": 12,
+			"time": 11,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -70,7 +70,7 @@
 				}
 			},
 			"times": [
-				12
+				11
 			],
 			"allTests": [
 				{
@@ -82,7 +82,7 @@
 			"id": "751056ac-0f4a-4d69-95a9-00d16f2b632d",
 			"name": "Get All Cheese Types",
 			"url": "localhost:3000/api/v1/cheeses/66c37e810d67c95844542788",
-			"time": 6,
+			"time": 4,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -112,7 +112,7 @@
 				}
 			},
 			"times": [
-				6
+				4
 			],
 			"allTests": [
 				{
@@ -127,7 +127,7 @@
 			"id": "17b5ac34-2611-4494-9105-e31ef52cb9dd",
 			"name": "get cheese by id",
 			"url": "localhost:3000/api/v1/cheeses/66c37e810d67c95844542788",
-			"time": 3,
+			"time": 4,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -157,7 +157,7 @@
 				}
 			},
 			"times": [
-				3
+				4
 			],
 			"allTests": [
 				{
@@ -172,7 +172,7 @@
 			"id": "06a25919-f006-4d70-b8b3-995c92dd75c0",
 			"name": "PUT Cheese DataById",
 			"url": "localhost:3000/api/v1/cheeses/66c37e810d67c95844542788",
-			"time": 6,
+			"time": 7,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -207,7 +207,7 @@
 				}
 			},
 			"times": [
-				6
+				7
 			],
 			"allTests": [
 				{
@@ -223,7 +223,7 @@
 			"id": "26d3fbb8-1b34-46e4-af01-1244158d80b0",
 			"name": "Post tastes test",
 			"url": "localhost:3000/api/v1/tastes",
-			"time": 4,
+			"time": 3,
 			"responseCode": {
 				"code": 201,
 				"name": "Created"
@@ -248,7 +248,7 @@
 				}
 			},
 			"times": [
-				4
+				3
 			],
 			"allTests": [
 				{
@@ -262,7 +262,7 @@
 			"id": "0defa477-8d34-4998-9125-83eb6a3b9d0b",
 			"name": "Get tastes test",
 			"url": "localhost:3000/api/v1/tastes",
-			"time": 6,
+			"time": 4,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -292,7 +292,7 @@
 				}
 			},
 			"times": [
-				6
+				4
 			],
 			"allTests": [
 				{
@@ -307,7 +307,7 @@
 			"id": "725cec82-a1fb-483a-aaaf-26b6eac8f009",
 			"name": "get tastes by id",
 			"url": "localhost:3000/api/v1/tastes/66c2d3ee3cb00458f18b1a89",
-			"time": 4,
+			"time": 2,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -342,7 +342,7 @@
 				}
 			},
 			"times": [
-				4
+				2
 			],
 			"allTests": [
 				{
@@ -358,7 +358,7 @@
 			"id": "c6086f0b-fa05-4588-9b56-63a5d9d5e336",
 			"name": "putbyid tastes test",
 			"url": "localhost:3000/api/v1/tastes/66c37e81638e473bfe113e0c",
-			"time": 4,
+			"time": 2,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -388,7 +388,7 @@
 				}
 			},
 			"times": [
-				4
+				2
 			],
 			"allTests": [
 				{
@@ -403,7 +403,7 @@
 			"id": "0a3320d3-5cff-4811-9612-5b0c4e816648",
 			"name": "Post Origin",
 			"url": "localhost:3000/api/v1/origins",
-			"time": 6,
+			"time": 5,
 			"responseCode": {
 				"code": 201,
 				"name": "Created"
@@ -428,7 +428,7 @@
 				}
 			},
 			"times": [
-				6
+				5
 			],
 			"allTests": [
 				{
@@ -487,7 +487,7 @@
 			"id": "cac076b5-8d11-4600-bd40-94dd1e77452d",
 			"name": "Get Originbyid",
 			"url": "localhost:3000/api/v1/origins/66c2d3873cb00458f18b1a85",
-			"time": 4,
+			"time": 2,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -522,7 +522,7 @@
 				}
 			},
 			"times": [
-				4
+				2
 			],
 			"allTests": [
 				{
@@ -538,7 +538,7 @@
 			"id": "f8ba0197-c8ec-40af-bf6c-2c5102904077",
 			"name": "Put Origin by id",
 			"url": "localhost:3000/api/v1/origins/66c2d3873cb00458f18b1a85",
-			"time": 4,
+			"time": 2,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -573,7 +573,7 @@
 				}
 			},
 			"times": [
-				4
+				2
 			],
 			"allTests": [
 				{
@@ -589,7 +589,7 @@
 			"id": "6c7bb7ec-addf-45a1-b483-46d6b6684e48",
 			"name": "Post relatedCheeses",
 			"url": "localhost:3000/api/v1/relatedCheeses",
-			"time": 5,
+			"time": 3,
 			"responseCode": {
 				"code": 201,
 				"name": "Created"
@@ -614,7 +614,7 @@
 				}
 			},
 			"times": [
-				5
+				3
 			],
 			"allTests": [
 				{
@@ -628,7 +628,7 @@
 			"id": "e2ef6ab6-1c68-4241-9c16-a340b2721eda",
 			"name": "Get relatedCheeses",
 			"url": "localhost:3000/api/v1/relatedCheeses",
-			"time": 8,
+			"time": 5,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -658,7 +658,7 @@
 				}
 			},
 			"times": [
-				8
+				5
 			],
 			"allTests": [
 				{
@@ -818,7 +818,7 @@
 		}
 	],
 	"count": 1,
-	"totalTime": 102,
+	"totalTime": 87,
 	"collection": {
 		"requests": [
 			{
