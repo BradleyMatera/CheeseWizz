@@ -44,34 +44,43 @@ Follow these steps to get the project up and running on your local machine:
 CheeseWizz/
 │
 ├── README.md
-├── app
-│   ├── controller
-│   │   └── cheeseController.js
-│   ├── db
-│   │   ├── config.js
-│   │   └── tests/
-│   │       ├── index.js
-│   │       ├── jest test strings/
-│   │       │   └── cheeseMath.test.js
-│   │       └── math modules/
-│   │           ├── addCheese.js
-│   │           ├── cheeseMath.js
-│   │           ├── cheeseSqrt.js
-│   │           ├── divideCheese.js
-│   │           ├── maxCheese.js
-│   │           ├── multiplyCheese.js
-│   │           └── subtractCheese.js
-│   ├── index.js
-│   ├── models
-│   │   ├── CheeseOrigin.js
-│   │   ├── CheeseType.js
-│   │   └── cheesemodel.js
-│   └── routes
-│       ├── cheeseRoutes.js
-│       └── index.js
-├── package-lock.json
-├── package.json
-└── server.js
+├── Client/
+├── Server/
+│   ├── app/
+│   │   ├── controller/
+│   │   │   ├── bigCtrl.js
+│   │   │   ├── originCtrl.js
+│   │   │   ├── relatedCtrl.js
+│   │   │   └── tasteCtrl.js
+│   │   ├── db/
+│   │   │   ├── config.js
+│   │   │   └── tests/
+│   │   │       ├── index.js
+│   │   │       ├── jest test strings/
+│   │   │       │   └── cheeseMath.test.js
+│   │   │       └── math modules/
+│   │   │           ├── addCheese.js
+│   │   │           ├── cheeseMath.js
+│   │   │           ├── cheeseSqrt.js
+│   │   │           ├── divideCheese.js
+│   │   │           ├── maxCheese.js
+│   │   │           ├── multiplyCheese.js
+│   │   │           └── subtractCheese.js
+│   │   ├── index.js
+│   │   ├── models/
+│   │   │   ├── cheeseModel.js
+│   │   │   ├── relatedCheeseSchema.js
+│   │   │   ├── originSchema.js
+│   │   │   └── tasteSchema.js
+│   │   ├── routes/
+│   │   │   ├── cheeseRoutes.js
+│   │   │   └── index.js
+│   ├── node_modules/
+│   ├── package-lock.json
+│   ├── package.json
+│   └── server.js
+├── playground-1.mongodb.js
+└── postmanCollections/
 ```
 
 ## 🧀 API Endpoints
