@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Define the main cheese schema
 const cheeseSchema = new mongoose.Schema({
     name: { 
         type: String, 
@@ -19,16 +18,16 @@ const cheeseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Origin',
         required: true 
-    }, 
+    },
     taste: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Taste',
         required: true 
-    }, 
+    },
     relatedCheeses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'RelatedCheese'
-    }], 
+    }],
     ingredients: { 
         type: [String], 
         required: true, 
@@ -84,7 +83,6 @@ const cheeseSchema = new mongoose.Schema({
     }
 });
 
-// Create the Cheese model from the schema
 const Cheese = mongoose.model('Cheese', cheeseSchema);
 
 module.exports = Cheese;

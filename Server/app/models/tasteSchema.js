@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Define the taste schema
 const tasteSchema = new mongoose.Schema({
     flavor: { 
         type: String, 
@@ -20,13 +19,12 @@ const tasteSchema = new mongoose.Schema({
         minLength: 3, 
         maxLength: 100 
     },
-    pairings: { 
-        type: [String], 
-        validate: [array => array.length > 0, 'There must be at least one pairing.']
-    }
+    cheeses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Cheese'
+    }]
 });
 
-// Create the Taste model from the schema
 const Taste = mongoose.model('Taste', tasteSchema);
 
 module.exports = Taste;

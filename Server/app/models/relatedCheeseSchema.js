@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Define the related cheese schema
 const relatedCheeseSchema = new mongoose.Schema({
     name: { 
         type: String, 
@@ -12,10 +11,13 @@ const relatedCheeseSchema = new mongoose.Schema({
         type: String, 
         enum: ['similar', 'complementary'], 
         required: true 
-    }
+    },
+    cheeses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Cheese'
+    }]
 });
 
-// Create the RelatedCheese model from the schema
 const RelatedCheese = mongoose.model('RelatedCheese', relatedCheeseSchema);
 
 module.exports = RelatedCheese;

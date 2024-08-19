@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Define the origin schema
 const originSchema = new mongoose.Schema({
     country: { 
         type: String, 
@@ -21,10 +20,13 @@ const originSchema = new mongoose.Schema({
     history: { 
         type: String, 
         maxLength: 500 
-    }
+    },
+    cheeses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Cheese'
+    }]
 });
 
-// Create the Origin model from the schema
 const Origin = mongoose.model('Origin', originSchema);
 
 module.exports = Origin;
