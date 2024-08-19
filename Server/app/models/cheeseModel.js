@@ -1,21 +1,7 @@
 const mongoose = require('mongoose');
 const originSchema = require('./originSchema'); // Import the origin schema
 const tasteSchema = require('./tasteSchema'); // Import the taste schema
-
-// Define the related cheese schema
-const relatedCheeseSchema = new mongoose.Schema({
-    name: { 
-        type: String, 
-        required: true, 
-        minLength: 3, 
-        maxLength: 100 
-    },
-    relationType: { 
-        type: String, 
-        enum: ['similar', 'complementary'], 
-        required: true 
-    }
-});
+const relatedCheeseSchema = require('./relatedCheeseSchema'); // Import the related cheese schema
 
 // Define the main cheese schema
 const cheeseSchema = new mongoose.Schema({
@@ -40,6 +26,7 @@ const cheeseSchema = new mongoose.Schema({
         type: tasteSchema, 
         required: true 
     }, // Embed the taste schema
+    relatedCheeses: [relatedCheeseSchema], // Embed the related cheese schema as an array
     ingredients: { 
         type: [String], 
         validate: {
