@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
-const RelatedCheese = require('../models/relatedCheeseSchema'); // Import the RelatedCheese model
+const RelatedCheese = require('../models/relatedCheeseSchema'); 
 
-// Function to get all related cheeses
 const getAllRelatedCheeses = async (req, res) => {
     try {
-        const relatedCheeses = await RelatedCheese.find({}); // Find all related cheese entries
+        const relatedCheeses = await RelatedCheese.find({});
         res.status(200).json({
             success: true,
             data: relatedCheeses,
-            message: `${req.method} - Request made to relatedCheese endpoint`
+            message: `${req.method} - Request made to related cheese endpoint`
         });
     } catch (error) {
         res.status(500).json({
@@ -18,17 +17,16 @@ const getAllRelatedCheeses = async (req, res) => {
     }
 };
 
-// Function to get a specific related cheese by its ID
 const getRelatedCheeseById = async (req, res) => {
     try {
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // Validate if the ID is a valid MongoDB ObjectID
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) { 
             return res.status(400).json({
                 success: false,
                 message: 'Invalid ID format'
             });
         }
 
-        const relatedCheese = await RelatedCheese.findById(req.params.id); // Find related cheese by ID
+        const relatedCheese = await RelatedCheese.findById(req.params.id);
         if (!relatedCheese) {
             return res.status(404).json({
                 success: false,
@@ -39,7 +37,7 @@ const getRelatedCheeseById = async (req, res) => {
         res.status(200).json({
             success: true,
             data: relatedCheese,
-            message: `${req.method} - Request made to relatedCheese endpoint with id ${req.params.id}`
+            message: `${req.method} - Request made to related cheese endpoint with id ${req.params.id}`
         });
     } catch (error) {
         res.status(500).json({

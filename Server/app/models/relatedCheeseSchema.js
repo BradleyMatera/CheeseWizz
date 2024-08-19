@@ -15,4 +15,7 @@ const relatedCheeseSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('RelatedCheese', relatedCheeseSchema); // Exporting as a Mongoose model
+// Create the RelatedCheese model from the schema
+const RelatedCheese = mongoose.model('RelatedCheese', relatedCheeseSchema);
+
+module.exports = RelatedCheese;

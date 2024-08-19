@@ -22,9 +22,11 @@ const tasteSchema = new mongoose.Schema({
     },
     pairings: { 
         type: [String], 
-        required: true, // Ensures the array is present and contains at least one pairing
-        validate: [array => array.length > 0, 'There must be at least one pairing.'] // Simplified validation
+        validate: [array => array.length > 0, 'There must be at least one pairing.']
     }
 });
 
-module.exports = mongoose.model('Taste', tasteSchema); // Exporting as a Mongoose model
+// Create the Taste model from the schema
+const Taste = mongoose.model('Taste', tasteSchema);
+
+module.exports = Taste;

@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const Origin = require('../models/originSchema'); // Import the Origin model
+const Origin = require('../models/originSchema'); 
 
-// Function to get all cheese origins
 const getAllCheeseOrigins = async (req, res) => {
     try {
-        const origins = await Origin.find({}); // Find all origins in the database
+        const origins = await Origin.find({});
         res.status(200).json({
             success: true,
             data: origins,
@@ -18,17 +17,16 @@ const getAllCheeseOrigins = async (req, res) => {
     }
 };
 
-// Function to get a specific cheese origin by its ID
 const getCheeseOriginById = async (req, res) => {
     try {
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // Validate if the ID is a valid MongoDB ObjectID
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) { 
             return res.status(400).json({
                 success: false,
                 message: 'Invalid ID format'
             });
         }
 
-        const origin = await Origin.findById(req.params.id); // Find origin by ID
+        const origin = await Origin.findById(req.params.id);
         if (!origin) {
             return res.status(404).json({
                 success: false,

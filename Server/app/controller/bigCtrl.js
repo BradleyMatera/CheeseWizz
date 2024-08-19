@@ -50,9 +50,16 @@ const getCheeseTypeById = async (req, res) => {
 };
 
 // Function to create a new cheese entry in the database.
-const createCheese = async (req, res) => {
-    try {
-        const newCheese = await Cheese.create(req.body); // Create a new cheese entry based on the request body data.
+const createCheese = async (req, res) => { // Request and response parameters.
+    try { // Try to create a new cheese entry.
+        const  { newCheese } = req.body; // Create a new cheese entry based on the request body data.
+        const user =  await Cheese.findById(newCheese); // Find the user by ID
+        cheese.relatedCheese = user; // Assign the related cheese to the user
+        const cheeseData = new Cheese(Cheese); // Create a new cheese entry based on the request body data.
+        user.relatedCheese.push(cheeseData); // Push the new cheese entry to the related cheese array.
+        await user.save(); // Save the user data.
+        await cheeseData.save(); // Save the new cheese entry data.
+        // Return a success response with the new cheese entry data.
         res.status(201).json({
             success: true,
             data: newCheese,

@@ -19,20 +19,20 @@ const cheeseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Origin',
         required: true 
-    }, // Reference the origin schema
+    }, 
     taste: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Taste',
         required: true 
-    }, // Reference the taste schema
+    }, 
     relatedCheeses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'RelatedCheese'
-    }], // Reference the related cheese schema as an array
+    }], 
     ingredients: { 
         type: [String], 
-        required: true, // Ensures the array is present and contains at least one ingredient
-        validate: [array => array.length > 0, 'There must be at least one ingredient.'] // Simplified validation
+        required: true, 
+        validate: [array => array.length > 0, 'There must be at least one ingredient.']
     },
     production: {
         method: { 
