@@ -1,5 +1,4 @@
 node_modules
 .gitattributes
-package-lock.json
 playground-1.mongodb.js
 
