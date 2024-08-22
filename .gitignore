@@ -5,3 +5,4 @@ playground-1.mongodb.js
 /tests
 .DS_Store
 /.DS_Store
+coverage
