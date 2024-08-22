@@ -1,6 +1,7 @@
 node_modules
 .gitattributes
 /playground-1.mongodb.js
+playground-1.mongodb.js
 /tests
 .DS_Store
 /.DS_Store
