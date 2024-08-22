@@ -110,7 +110,7 @@ const createCheese = async (req, res) => {
         let originDoc = await Origin.findOneAndUpdate(
             { country: origin.country, region: origin.region }, // Search criteria: 'country' and 'region'
             origin, // Data to update or insert
-            { upsert: true, new: true } // Options to insert if not found and return the new document
+            { upsert: true, new: true } // Options to insert if not found and return the new document upsert updates and inserts at the same time
         );
 
         // Creating or finding an existing Taste document.
