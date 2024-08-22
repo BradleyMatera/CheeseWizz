@@ -5,7 +5,7 @@ const Taste = require('../models/tasteSchema'); // Importing the Taste sub-schem
 const RelatedCheese = require('../models/relatedCheeseSchema'); // Importing the RelatedCheese sub-schema (links to other cheese documents)
 const Messages = require('../utils/messages'); // Importing custom messages for responses
 
-// Function to get all cheese types from the database 
+// Function to get all cheese types from the database NO REQUEST BODY
 const getAllCheeseTypes = async (req, res) => { 
     // This function fetches all cheese documents from the database. 
     // Here, documents in MongoDB represent stored records in the collection, and Mongoose helps us interact with them.
@@ -17,17 +17,22 @@ const getAllCheeseTypes = async (req, res) => {
         // Calculate the number of documents to skip based on the current page and limit
         const skip = (page - 1) * limit; // Skips over records from previous pages
 
-        // Fetching all cheeses and populating related fields (origin, taste, related cheeses)
-        // Populate replaces ObjectId references with the actual document contents.
+        // Sorting logic added here
+        const sortBy = req.query.sortBy || 'name'; // Default sorting by 'name' if not provided
+        const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1; // Default sorting order is ascending, '1' for ascending, '-1' for descending
+
+        // Fetching all cheeses, applying sorting, and populating related fields (origin, taste, related cheeses)
         const cheeses = await Cheese.find({})
             .populate('origin', 'country region village history') // Populating the origin field with specific sub-fields
             .populate('taste', 'flavor texture aroma pairings') // Populating the taste field with specific sub-fields
             .populate('relatedCheeses', 'name relationType') // Populating the relatedCheeses field with specific sub-fields
+            .sort({ [sortBy]: sortOrder }) // Applying the sorting based on query parameters
             .skip(skip) // Skipping records based on the current page
             .limit(limit); // Limiting the number of records returned
 
-        // Log the pagination details for debugging
+        // Log the pagination and sorting details for debugging
         console.log(`Page: ${page}, Limit: ${limit}, Skipped: ${skip}`); // Log the page, limit, and skip values to debug pagination
+        console.log(`Sorting By: ${sortBy}, Order: ${sortOrder === 1 ? 'Ascending' : 'Descending'}`); // Log sorting details
         console.log(`Cheeses Returned: ${cheeses.length}`); // Log the number of cheeses returned to verify pagination is working
 
         // OLD CODE COMMENTED OUT BELOW
