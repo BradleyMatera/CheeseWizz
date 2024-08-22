@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1724351795274" clover="3.2.0">
+  <project timestamp="1724351795275" name="All files">
+    <metrics statements="26" coveredstatements="25" conditionals="2" coveredconditionals="1" methods="6" coveredmethods="6" elements="34" coveredelements="32" complexity="0" loc="26" ncloc="26" packages="1" files="6" classes="6"/>
+    <file name="addCheese.js" path="/Users/bradleymatera/Desktop/CheeseWizz/CheeseWizz/CheeseWizz/Server/app/db/tests/intergration/addCheese.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="6" count="1" type="stmt"/>
+      <line num="8" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+    </file>
+    <file name="cheeseSqrt.js" path="/Users/bradleymatera/Desktop/CheeseWizz/CheeseWizz/CheeseWizz/Server/app/db/tests/intergration/cheeseSqrt.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+    </file>
+    <file name="divideCheese.js" path="/Users/bradleymatera/Desktop/CheeseWizz/CheeseWizz/CheeseWizz/Server/app/db/tests/intergration/divideCheese.js">
+      <metrics statements="6" coveredstatements="5" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="5" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="7" count="0" type="stmt"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="14" count="1" type="stmt"/>
+    </file>
+    <file name="maxCheese.js" path="/Users/bradleymatera/Desktop/CheeseWizz/CheeseWizz/CheeseWizz/Server/app/db/tests/intergration/maxCheese.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="10" count="1" type="stmt"/>
+    </file>
+    <file name="multiplyCheese.js" path="/Users/bradleymatera/Desktop/CheeseWizz/CheeseWizz/CheeseWizz/Server/app/db/tests/intergration/multiplyCheese.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="10" count="1" type="stmt"/>
+    </file>
+    <file name="subtractCheese.js" path="/Users/bradleymatera/Desktop/CheeseWizz/CheeseWizz/CheeseWizz/Server/app/db/tests/intergration/subtractCheese.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="1" count="1" type="stmt"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="6" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>

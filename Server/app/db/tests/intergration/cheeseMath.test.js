@@ -1,10 +1,10 @@
 // Importing each function to test individually.
-const addCheese = require('../addCheese');
-const subtractCheese = require('../subtractCheese');
-const multiplyCheese = require('../multiplyCheese');
-const divideCheese = require('../divideCheese');
-const cheeseSqrt = require('../cheeseSqrt');
-const maxCheese = require('../maxCheese');
+const addCheese = require('./addCheese');
+const subtractCheese = require('./subtractCheese');
+const multiplyCheese = require('./multiplyCheese');
+const divideCheese = require('./divideCheese');
+const cheeseSqrt = require('./cheeseSqrt');
+const maxCheese = require('./maxCheese');
 
 // Test for the addition function.
 describe('Cheese Addition Function', () => {
