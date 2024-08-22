@@ -10,12 +10,31 @@ const getAllCheeseTypes = async (req, res) => {
     // This function fetches all cheese documents from the database. 
     // Here, documents in MongoDB represent stored records in the collection, and Mongoose helps us interact with them.
     try {
+        // Pagination logic added here
+        const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+        const limit = parseInt(req.query.limit) || 10; // Default to 10 items per page if not provided
+
+        // Calculate the number of documents to skip based on the current page and limit
+        const skip = (page - 1) * limit; // Skips over records from previous pages
+
         // Fetching all cheeses and populating related fields (origin, taste, related cheeses)
         // Populate replaces ObjectId references with the actual document contents.
         const cheeses = await Cheese.find({})
             .populate('origin', 'country region village history') // Populating the origin field with specific sub-fields
             .populate('taste', 'flavor texture aroma pairings') // Populating the taste field with specific sub-fields
-            .populate('relatedCheeses', 'name relationType'); // Populating the relatedCheeses field with specific sub-fields
+            .populate('relatedCheeses', 'name relationType') // Populating the relatedCheeses field with specific sub-fields
+            .skip(skip) // Skipping records based on the current page
+            .limit(limit); // Limiting the number of records returned
+
+        // Log the pagination details for debugging
+        console.log(`Page: ${page}, Limit: ${limit}, Skipped: ${skip}`); // Log the page, limit, and skip values to debug pagination
+        console.log(`Cheeses Returned: ${cheeses.length}`); // Log the number of cheeses returned to verify pagination is working
+
+        // OLD CODE COMMENTED OUT BELOW
+        // const cheeses = await Cheese.find({})
+        //     .populate('origin', 'country region village history') // Populating the origin field with specific sub-fields
+        //     .populate('taste', 'flavor texture aroma pairings') // Populating the taste field with specific sub-fields
+        //     .populate('relatedCheeses', 'name relationType'); // Populating the relatedCheeses field with specific sub-fields
 
         // Sending a success response with the list of cheeses
         res.status(200).json({
