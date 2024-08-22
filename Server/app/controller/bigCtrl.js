@@ -5,7 +5,7 @@ const Taste = require('../models/tasteSchema'); // Importing the Taste sub-schem
 const RelatedCheese = require('../models/relatedCheeseSchema'); // Importing the RelatedCheese sub-schema (links to other cheese documents)
 const Messages = require('../utils/messages'); // Importing custom messages for responses
 
-// Function to get all cheese types from the database NO REQUEST BODY
+// Function to get all cheese types from the database NO REQUEST 
 const getAllCheeseTypes = async (req, res) => { 
     // This function fetches all cheese documents from the database. 
     // Here, documents in MongoDB represent stored records in the collection, and Mongoose helps us interact with them.
