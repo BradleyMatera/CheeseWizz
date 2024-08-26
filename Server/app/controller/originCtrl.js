@@ -5,23 +5,20 @@ const Taste = require('../models/tasteSchema');
 const Messages = require('../utils/messages');
 const mongoose = require('mongoose');
 
-// In the Origin controller, nested populations are used to fully connect the data between origins, cheeses, tastes, and related cheeses.
-// This approach ensures that when an origin is requested, all related entities are included in the response.
-// This is particularly important for complex data models where related entities are interdependent.
-
+// Fetch all origins with related data populated
 const getAllCheeseOrigins = async (req, res) => {
     try {
         const origins = await Origin.find({})
             .populate({
-                path: 'cheeses', // Populates the 'cheeses' field with the referenced Cheese documents.
-                select: 'name age nutrition ingredients', // Only specific fields are selected to optimize the response.
+                path: 'cheeses',
+                select: 'name age nutrition ingredients',
                 populate: [
-                    { path: 'taste', select: 'flavor texture aroma pairings' }, // Populates the 'taste' field within each cheese.
-                    { path: 'relatedCheeses', select: 'name relationType' } // Populates the 'relatedCheeses' field within each cheese.
+                    { path: 'taste', select: 'flavor texture aroma pairings' },
+                    { path: 'relatedCheeses', select: 'name relationType' }
                 ]
             })
-            .populate('relatedCheeses', 'name relationType') // Populates the 'relatedCheeses' field for the origin itself.
-            .populate('tastes', 'flavor texture aroma pairings'); // Populates the 'tastes' field for the origin itself.
+            .populate('relatedCheeses', 'name relationType')
+            .populate('tastes', 'flavor texture aroma pairings');
 
         res.status(200).json({
             success: true,
@@ -39,7 +36,7 @@ const getAllCheeseOrigins = async (req, res) => {
     }
 };
 
-// Get a specific cheese origin by ID
+// Fetch a specific origin by ID with related data populated
 const getCheeseOriginById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -79,55 +76,46 @@ const getCheeseOriginById = async (req, res) => {
     }
 };
 
-// Create a new origin entry
+// Create a new origin with related data linked
 const createOrigin = async (req, res) => {
     try {
         const { cheeses, relatedCheeses, tastes, ...originData } = req.body;
 
-// Convert the references to valid ObjectIds, assuming that the incoming data uses names or other identifiers
+        const cheeseIds = await Cheese.find({
+            name: { $in: cheeses.map(c => c.name) }
+        }).select('_id');
 
-// cheeseIds will store an array of ObjectId references to the Cheese model
-const cheeseIds = await Cheese.find({
-    name: { $in: cheeses.map(c => c.name) } // $in operator checks if the name exists in the provided array,$in operator selects the documents where the value of a field equals any value in the specified array.
-}).select('_id'); // select() is used here to only return the '_id' field
+        const relatedCheeseIds = await RelatedCheese.find({
+            name: { $in: relatedCheeses.map(rc => rc.name) }
+        }).select('_id');
 
-// relatedCheeseIds will store an array of ObjectId references to the RelatedCheese model
-const relatedCheeseIds = await RelatedCheese.find({
-    name: { $in: relatedCheeses.map(rc => rc.name) } // $in operator checks if the name exists in the provided array
-}).select('_id'); // select() is used here to only return the '_id' field
+        const tasteIds = await Taste.find({
+            flavor: { $in: tastes.map(t => t.flavor) }
+        }).select('_id');
 
-// tasteIds will store an array of ObjectId references to the Taste model
-const tasteIds = await Taste.find({
-    flavor: { $in: tastes.map(t => t.flavor) } // $in operator checks if the flavor exists in the provided array
-}).select('_id'); // select() is used here to only return the '_id' field
+        const origin = new Origin({
+            ...originData,
+            cheeses: cheeseIds,
+            relatedCheeses: relatedCheeseIds,
+            tastes: tasteIds
+        });
 
-// Create a new Origin document with the provided data and associated ObjectIds
-const origin = new Origin({
-    ...originData, // Spread operator to include all properties from originData
-    cheeses: cheeseIds, // Assign the array of cheese ObjectIds to the cheeses field
-    relatedCheeses: relatedCheeseIds, // Assign the array of related cheese ObjectIds to the relatedCheeses field
-    tastes: tasteIds // Assign the array of taste ObjectIds to the tastes field
-});
+        await origin.save();
 
-// Save the newly created Origin document to the database
-await origin.save();
-
-// Send a success response with the created Origin document and a success message
-res.status(201).json({
-    success: true, // Indicates the request was successful
-    data: origin, // The newly created Origin document
-    message: Messages.CHEESE_CREATED // Success message from the Messages module
-});
-} catch (error) {
-    // If there's an error, send a failure response with the error message
-    res.status(400).json({
-        success: false, // Indicates the request failed
-        message: error.message // The specific error message for debugging
-    });
-}
+        res.status(201).json({
+            success: true,
+            data: origin,
+            message: Messages.CHEESE_CREATED
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    }
 };
 
-// Update an origin entry by ID
+// Update an existing origin by ID
 const updateOriginById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -138,6 +126,7 @@ const updateOriginById = async (req, res) => {
         }
 
         const updatedOrigin = await Origin.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
         if (!updatedOrigin) {
             return res.status(404).json({
                 success: false,
@@ -158,7 +147,7 @@ const updateOriginById = async (req, res) => {
     }
 };
 
-// Delete an origin entry by ID
+// Delete an origin by ID
 const deleteOriginById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -169,6 +158,7 @@ const deleteOriginById = async (req, res) => {
         }
 
         const deletedOrigin = await Origin.findByIdAndDelete(req.params.id);
+
         if (!deletedOrigin) {
             return res.status(404).json({
                 success: false,

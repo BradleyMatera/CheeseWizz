@@ -3,6 +3,7 @@ const Cheese = require('../models/cheeseModel');
 const Messages = require('../utils/messages');
 const mongoose = require('mongoose');
 
+// Fetch all tastes with related cheeses and origins populated
 const getAllCheeseTastes = async (req, res) => {
     try {
         const tastes = await Taste.find({})
@@ -31,7 +32,7 @@ const getAllCheeseTastes = async (req, res) => {
     }
 };
 
-// Get a specific cheese taste by ID
+// Fetch a specific taste by ID with related cheeses and origins populated
 const getCheeseTasteById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -69,12 +70,11 @@ const getCheeseTasteById = async (req, res) => {
     }
 };
 
-// Create a new taste entry
+// Create a new taste with related cheeses linked
 const createTaste = async (req, res) => {
     try {
         const { cheeses, ...tasteData } = req.body;
 
-        // Convert the references to valid ObjectIds, assuming that the incoming data uses names or other identifiers
         const cheeseIds = await Cheese.find({ name: { $in: cheeses.map(c => c.name) } }).select('_id');
 
         const taste = new Taste({
@@ -96,7 +96,7 @@ const createTaste = async (req, res) => {
     }
 };
 
-// Update a taste entry by ID
+// Update an existing taste entry by ID
 const updateTasteById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -106,7 +106,6 @@ const updateTasteById = async (req, res) => {
             });
         }
 
-        // Ensure you're passing an object and not a string
         const updatedTaste = await Taste.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
         if (!updatedTaste) {

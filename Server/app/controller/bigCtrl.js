@@ -6,57 +6,43 @@ const RelatedCheese = require('../models/relatedCheeseSchema'); // Importing the
 const Messages = require('../utils/messages'); // Importing custom messages for responses
 
 // Function to get all cheese types from the database NO REQUEST BODY
-const getAllCheeseTypes = async (req, res) => { 
-    // This function fetches all cheese documents from the database. 
-    // Here, documents in MongoDB represent stored records in the collection, and Mongoose helps us interact with them.
+const getAllCheeseTypes = async (req, res) => {
     try {
-        // Pagination logic added here
-        const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
-        const limit = parseInt(req.query.limit) || 10; // Default to 10 items per page if not provided
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+        const sortBy = req.query.sortBy || 'name';
+        const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1;
 
-        // Calculate the number of documents to skip based on the current page and limit
-        const skip = (page - 1) * limit; // Skips over records from previous pages
+        // Search logic
+        const searchTerm = req.query.search || '';
+        const searchRegex = new RegExp(searchTerm, 'i'); // 'i' for case-insensitive
 
-        // Sorting logic added here
-        const sortBy = req.query.sortBy || 'name'; // Default sorting by 'name' if not provided
-        const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1; // Default sorting order is ascending, '1' for ascending, '-1' for descending
+        // Fetching all cheeses with the search term, applying sorting, and populating related fields
+        const cheeses = await Cheese.find({ name: searchRegex })
+            .populate('origin', 'country region village history')
+            .populate('taste', 'flavor texture aroma pairings')
+            .populate('relatedCheeses', 'name relationType')
+            .sort({ [sortBy]: sortOrder })
+            .skip(skip)
+            .limit(limit);
 
-        // Fetching all cheeses, applying sorting, and populating related fields (origin, taste, related cheeses)
-        const cheeses = await Cheese.find({})
-            .populate('origin', 'country region village history') // Populating the origin field with specific sub-fields
-            .populate('taste', 'flavor texture aroma pairings') // Populating the taste field with specific sub-fields
-            .populate('relatedCheeses', 'name relationType') // Populating the relatedCheeses field with specific sub-fields
-            .sort({ [sortBy]: sortOrder }) // Applying the sorting based on query parameters
-            .skip(skip) // Skipping records based on the current page
-            .limit(limit); // Limiting the number of records returned
+        console.log(`Page: ${page}, Limit: ${limit}, Skipped: ${skip}`);
+        console.log(`Sorting By: ${sortBy}, Order: ${sortOrder === 1 ? 'Ascending' : 'Descending'}`);
+        console.log(`Cheeses Returned: ${cheeses.length}`);
 
-        // Log the pagination and sorting details for debugging
-        console.log(`Page: ${page}, Limit: ${limit}, Skipped: ${skip}`); // Log the page, limit, and skip values to debug pagination
-        console.log(`Sorting By: ${sortBy}, Order: ${sortOrder === 1 ? 'Ascending' : 'Descending'}`); // Log sorting details
-        console.log(`Cheeses Returned: ${cheeses.length}`); // Log the number of cheeses returned to verify pagination is working
-
-        // OLD CODE COMMENTED OUT BELOW
-        // const cheeses = await Cheese.find({})
-        //     .populate('origin', 'country region village history') // Populating the origin field with specific sub-fields
-        //     .populate('taste', 'flavor texture aroma pairings') // Populating the taste field with specific sub-fields
-        //     .populate('relatedCheeses', 'name relationType'); // Populating the relatedCheeses field with specific sub-fields
-
-        // Sending a success response with the list of cheeses
         res.status(200).json({
-            success: true, // Indicates the request was successful
-            count: cheeses.length, // The number of cheeses returned
-            data: cheeses, // The actual data (cheeses) retrieved from the database
-            message: 'Cheeses retrieved successfully' // A success message
+            success: true,
+            count: cheeses.length,
+            data: cheeses,
+            message: 'Cheeses retrieved successfully'
         });
     } catch (error) {
-        // Catching any errors that occur during the process and logging them
         console.error('Error in getAllCheeseTypes:', error);
-        
-        // Sending a server error response with the error message
         res.status(500).json({
-            success: false, // Indicates the request failed
-            message: 'Server Error', // A general error message
-            error: error.message // The specific error message
+            success: false,
+            message: 'Server Error',
+            error: error.message
         });
     }
 };
