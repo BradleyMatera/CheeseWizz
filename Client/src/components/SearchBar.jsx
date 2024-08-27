@@ -1,30 +1,22 @@
 import { useState } from "react";
 
 function SearchBar({ onSubmit }) {
-  // State to hold the current search term
   const [term, setTerm] = useState("");
-
-  // State to hold the currently selected collection (default is "cheese")
   const [collection, setCollection] = useState("cheese");
 
-  // Handler for changes in the search input field
   const handleSearchChange = (event) => {
     setTerm(event.target.value);
   };
 
-  // Handler for changes in the collection dropdown
   const handleCollectionChange = (event) => {
     setCollection(event.target.value);
   };
 
-  // Handler for form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     if (term.trim() === "") {
-      // If no search term is entered, fetch all items from the selected collection
       onSubmit(collection, "getAll");
     } else {
-      // If a search term is entered, pass it along with the selected collection
       onSubmit(collection, term);
     }
   };
@@ -33,7 +25,6 @@ function SearchBar({ onSubmit }) {
     <div className="search-bar">
       <h3>Search Bar</h3>
       <form onSubmit={handleSubmit}>
-        {/* Dropdown to select the collection to search within */}
         <label htmlFor="collection">Collection:</label>
         <select
           id="collection"
@@ -47,7 +38,6 @@ function SearchBar({ onSubmit }) {
           <option value="relatedCheese">Related Cheeses</option>
         </select>
 
-        {/* Input field for entering the search term */}
         <label htmlFor="search">Search:</label>
         <input
           type="text"
@@ -58,7 +48,6 @@ function SearchBar({ onSubmit }) {
           placeholder="Enter a search term"
         />
 
-        {/* Submit button for the search form */}
         <button type="submit">Search</button>
       </form>
     </div>
