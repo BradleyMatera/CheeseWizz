@@ -4,33 +4,103 @@ const Origin = require('../models/originSchema'); // Importing the Origin sub-sc
 const Taste = require('../models/tasteSchema'); // Importing the Taste sub-schema (another part of the Cheese document)
 const RelatedCheese = require('../models/relatedCheeseSchema'); // Importing the RelatedCheese sub-schema (links to other cheese documents)
 const Messages = require('../utils/messages'); // Importing custom messages for responses
+const buildSearchCriteria = require('../utils/search'); // Importing the search criteria builder
+// added because we need to use the search criteria builder to create a search query based on the search term
 
 // Function to get all cheese types from the database NO REQUEST BODY
 const getAllCheeseTypes = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
+        // Parse pagination parameters from query, defaulting to page 1 and limit 10
+        const page = parseInt(req.query.page) || 1; 
         const limit = parseInt(req.query.limit) || 10;
-        const skip = (page - 1) * limit;
-        const sortBy = req.query.sortBy || 'name';
-        const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1;
+        const skip = (page - 1) * limit; // Calculate the number of documents to skip
+        const sortBy = req.query.sortBy || 'name'; // Default sorting by 'name'
+        const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1; // Determine sorting order, default is ascending
 
-        // Search logic
-        const searchTerm = req.query.search || '';
-        const searchRegex = new RegExp(searchTerm, 'i'); // 'i' for case-insensitive
+        let query = {};
 
-        // Fetching all cheeses with the search term, applying sorting, and populating related fields
-        const cheeses = await Cheese.find({ name: searchRegex })
-            .populate('origin', 'country region village history')
-            .populate('taste', 'flavor texture aroma pairings')
-            .populate('relatedCheeses', 'name relationType')
-            .sort({ [sortBy]: sortOrder })
-            .skip(skip)
-            .limit(limit);
+// Check if there's a search term in the query and format it for regex(Regular expressions) search
+const searchTerm = req.query.search ? req.query.search.trim() : ''; 
+// Retrieve the search term from the request query and trim any leading or trailing spaces
 
+// Only proceed if a valid search term is provided and it's not the 'getAll' keyword
+if (searchTerm && searchTerm !== 'getAll') {
+
+// Use the search criteria builder to create a search query based on the search term
+// Replace spaces in the search term with the '|' character to create an OR condition in the regex
+// The '\s+' matches one or more whitespace characters (spaces, tabs, etc.), and 'g' is the global flag to replace all occurrences
+// For example, "cheddar cheese" becomes "cheddar|cheese", allowing the search to match either "cheddar" OR "cheese"
+const searchRegex = new RegExp(searchTerm.replace(/\s+/g, '|'), 'i'); 
+
+// 'i' flag makes the regex case-insensitive, so it will match regardless of uppercase or lowercase letters
+// The resulting regex can be used to find matches across different fields in the database
+    /* 
+// MongoDB's $or Operator:
+
+// The $or operator in MongoDB lets us run logical OR queries. It returns 
+// documents that match at least one of the conditions we list. So, if we're 
+// searching for a term in fields like name, origin, or taste, $or will check 
+// all those fields and include any document that matches any of them.
+
+// This is really handy when you want to search across multiple fields and need 
+// results that match at least one of them. It’s a core part of MongoDB’s query 
+// language, often used in the `find` method to build more complex searches.
+
+// How $or Works:
+
+// Say we have a bunch of cheese documents. We want to find cheeses by name, 
+// region, or flavor. Instead of running separate queries for each, we use $or 
+// to combine these conditions into one search.
+
+    In the context of this code:
+    ----------------------------
+    - { name: searchRegex }: This checks if the search term matches the 'name' field of the cheese document.
+    - { 'origin.country': searchRegex }: This checks if the search term matches the 'country' field within the 'origin' embedded document.
+    The search term could match in any of these fields, and if it does, the 
+    document will be included in the results.
+
+// Regular Expressions in Search:
+
+// Regular expressions (regex) are a way to define search patterns, 
+// allowing for flexible and advanced string matching.
+
+// The 'i' flag at the end of the regex makes the search case-insensitive, so it 
+// doesn’t matter if the text is uppercase or lowercase—it will still match.
+
+// The '|' operator in the regex treats spaces in the search term as OR conditions. 
+// For example, if the user types "Cheddar France", the search will find documents 
+// that match either "Cheddar" OR "France" in any of the fields we specified.
+
+    */
+    query = {
+        $or: [
+            { name: searchRegex }, // Search by cheese name
+            { 'origin.country': searchRegex }, // Search by country of origin
+            { 'origin.region': searchRegex }, // Search by region of origin
+            { 'origin.village': searchRegex }, // Search by village of origin
+            { 'taste.flavor': searchRegex }, // Search by taste flavor
+            { 'taste.texture': searchRegex }, // Search by taste texture
+            { 'taste.aroma': searchRegex }, // Search by taste aroma
+            { 'relatedCheeses.name': searchRegex } // Search by related cheese name
+        ]
+    };
+}
+
+        // Execute the query with pagination, sorting, and populating related fields
+        const cheeses = await Cheese.find(query)
+            .populate('origin', 'country region village history') // Populate origin details
+            .populate('taste', 'flavor texture aroma pairings') // Populate taste details
+            .populate('relatedCheeses', 'name relationType') // Populate related cheese details
+            .sort({ [sortBy]: sortOrder }) // Sort the results
+            .skip(skip) // Skip documents for pagination
+            .limit(limit); // Limit the number of documents returned
+
+        // Logging details for debugging
         console.log(`Page: ${page}, Limit: ${limit}, Skipped: ${skip}`);
         console.log(`Sorting By: ${sortBy}, Order: ${sortOrder === 1 ? 'Ascending' : 'Descending'}`);
         console.log(`Cheeses Returned: ${cheeses.length}`);
 
+        // Return a successful response with the cheese data
         res.status(200).json({
             success: true,
             count: cheeses.length,
@@ -38,6 +108,7 @@ const getAllCheeseTypes = async (req, res) => {
             message: 'Cheeses retrieved successfully'
         });
     } catch (error) {
+        // Log the error and return a server error response
         console.error('Error in getAllCheeseTypes:', error);
         res.status(500).json({
             success: false,
@@ -51,10 +122,9 @@ const getAllCheeseTypes = async (req, res) => {
 const getCheeseTypeById = async (req, res) => {
     try {
         // Checking if the provided ID is a valid MongoDB ObjectId
-        // ObjectIds are unique identifiers generated by MongoDB for each document.
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({
-                success: false, // Indicates the request failed
+                success: false,
                 message: 'Invalid ID format' // Error message for an invalid ID format
             });
         }
@@ -79,17 +149,16 @@ const getCheeseTypeById = async (req, res) => {
             });
 
         // If no cheese is found with the provided ID, return a 404 error
-        if (!cheese) { // If cheese is null, undefined, 0, false, NaN, or an empty string, 
-            return res.status(404).json({ // the expression !cheese will evaluate to true, indicating that the cheese is not found.
-
-                success: false, // Indicates the request failed
+        if (!cheese) {
+            return res.status(404).json({
+                success: false,
                 message: 'Cheese not found' // Error message for a non-existent cheese
             });
         }
 
         // Sending a success response with the found cheese data
         res.status(200).json({
-            success: true, // Indicates the request was successful
+            success: true,
             data: cheese, // The cheese data retrieved from the database
             message: `${req.method} - Request made to cheese endpoint with id ${req.params.id}` // A success message
         });
@@ -99,7 +168,7 @@ const getCheeseTypeById = async (req, res) => {
 
         // Sending a server error response with the error message
         res.status(500).json({
-            success: false, // Indicates the request failed
+            success: false,
             message: 'Server Error', // A general error message
             error: error.message // The specific error message
         });
@@ -109,80 +178,61 @@ const getCheeseTypeById = async (req, res) => {
 // Function to create a new cheese entry
 const createCheese = async (req, res) => {
     try {
-        // Destructuring assignment from the request body 'req.body'.
-        // 'origin', 'taste', and 'relatedCheeses' are extracted, 
-        // while '...cheeseData' gathers the remaining properties into a new object called 'cheeseData'.
         const { origin, taste, relatedCheeses, ...cheeseData } = req.body;
 
-        // Creating or finding an existing Origin document.
-        // Here, Mongoose allows you to find a document in the database and update it if it exists,
-        // or create a new one if it doesn't, using 'upsert: true'.
+        // Find or create Origin document
         let originDoc = await Origin.findOneAndUpdate(
-            { country: origin.country, region: origin.region }, // Search criteria: 'country' and 'region'
-            origin, // Data to update or insert
-            { upsert: true, new: true } // Options to insert if not found and return the new document upsert updates and inserts at the same time
+            { country: origin.country, region: origin.region }, 
+            origin, 
+            { upsert: true, new: true } 
         );
 
-        // Creating or finding an existing Taste document.
-        // Works similarly to the Origin creation, but it matches 'flavor' and 'texture'.
+        // Find or create Taste document
         let tasteDoc = await Taste.findOneAndUpdate(
-            { flavor: taste.flavor, texture: taste.texture }, // Search criteria: 'flavor' and 'texture'
-            taste, // Data to update or insert
-            { upsert: true, new: true } // Options to insert if not found and return the new document
+            { flavor: taste.flavor, texture: taste.texture }, 
+            taste, 
+            { upsert: true, new: true }
         );
 
-        // Array to hold the IDs of the related cheese documents.
+        // Array to hold related cheese documents' IDs
         let relatedCheeseDocs = [];
 
-        // Looping through each item in the 'relatedCheeses' array.
-        // Each 'relatedCheese' is processed to find or create a document.
-        // The '_id' of each related cheese document is then pushed into the 'relatedCheeseDocs' array.
         for (let relatedCheese of relatedCheeses) {
             let relatedCheeseDoc = await RelatedCheese.findOneAndUpdate(
-                { name: relatedCheese.name }, // Search criteria: 'name'
-                relatedCheese, // Data to update or insert
-                { upsert: true, new: true } // Options to insert if not found and return the new document
+                { name: relatedCheese.name }, 
+                relatedCheese, 
+                { upsert: true, new: true } 
             );
-            relatedCheeseDocs.push(relatedCheeseDoc._id); // Store the '_id' in the array
+            relatedCheeseDocs.push(relatedCheeseDoc._id);
         }
 
-        // Creating the main Cheese document.
-        // In MongoDB, a document is a structured data unit stored in a collection (like a row in a SQL database).
-        // Here, we're using the 'cheeseData' object to create a new Cheese document, 
-        // which includes references to the origin, taste, and relatedCheeses documents.
+        // Creating the main Cheese document
         const cheese = new Cheese({
-            ...cheeseData, // Spread operator '...' adds the remaining properties of 'cheeseData'
-            origin: originDoc._id, // Reference to the 'Origin' document's '_id'
-            taste: tasteDoc._id, // Reference to the 'Taste' document's '_id'
-            relatedCheeses: relatedCheeseDocs // Array of related cheese document IDs
+            ...cheeseData,
+            origin: originDoc._id, 
+            taste: tasteDoc._id, 
+            relatedCheeses: relatedCheeseDocs 
         });
 
-        // Saving the new Cheese document to the database.
-        // This step persists the object in MongoDB, turning it into a stored document.
         await cheese.save();
 
-        // Populating the related fields (origin, taste, relatedCheeses) with full documents, not just IDs.
-        // 'populate' replaces the IDs with the actual document content from the referenced collections.
+        // Populate the newly created cheese document
         const populatedCheese = await Cheese.findById(cheese._id)
-            .populate('origin') // Populate 'origin' with the full document
-            .populate('taste') // Populate 'taste' with the full document
-            .populate('relatedCheeses'); // Populate 'relatedCheeses' with full documents
+            .populate('origin') 
+            .populate('taste') 
+            .populate('relatedCheeses');
 
-        // Sending a 201 (Created) response with the populated cheese data.
         res.status(201).json({
-            success: true, // Success flag for the client
-            data: populatedCheese, // The fully populated cheese document
-            message: Messages.CHEESE_CREATED // Success message (imported from 'Messages')
+            success: true, 
+            data: populatedCheese, 
+            message: Messages.CHEESE_CREATED 
         });
     } catch (error) {
-        // Catching and handling any errors that occur during the process.
-        // 'console.error' logs the error for debugging purposes.
         console.error('Error in createCheese:', error);
 
-                // Sending a 400 (Bad Request) response with an error message if something goes wrong.
         res.status(400).json({
-            success: false, // Failure flag for the client
-            message: Messages.ERROR_CREATING_CHEESE // Error message (imported from 'Messages')
+            success: false, 
+            message: Messages.ERROR_CREATING_CHEESE 
         });
     }
 };
@@ -190,53 +240,44 @@ const createCheese = async (req, res) => {
 // Function to update an existing cheese entry by its ID
 const updateCheeseById = async (req, res) => {
     try {
-        // Destructuring the request body to separate origin, taste, relatedCheeses, and other cheese data.
         const { origin, taste, relatedCheeses, ...cheeseData } = req.body;
 
-        // If origin data is provided, find or update the existing Origin document.
-        // If origin is null, originDoc will also be null.
         let originDoc = origin ? await Origin.findOneAndUpdate(
-            { country: origin.country, region: origin.region }, // Search criteria based on country and region
-            origin, // Data to update or insert
-            { upsert: true, new: true } // Options to insert if not found, and return the updated document
+            { country: origin.country, region: origin.region }, 
+            origin, 
+            { upsert: true, new: true }
         ) : null;
 
-        // If taste data is provided, find or update the existing Taste document.
-        // If taste is null, tasteDoc will also be null.
         let tasteDoc = taste ? await Taste.findOneAndUpdate(
-            { flavor: taste.flavor, texture: taste.texture }, // Search criteria based on flavor and texture
-            taste, // Data to update or insert
-            { upsert: true, new: true } // Options to insert if not found, and return the updated document
+            { flavor: taste.flavor, texture: taste.texture }, 
+            taste, 
+            { upsert: true, new: true }
         ) : null;
 
-        // Initialize an array to store related cheese IDs.
         let relatedCheeseIds = [];
         
-        // If relatedCheeses array is provided and not empty, process each related cheese.
         if (relatedCheeses && relatedCheeses.length > 0) {
             for (let relatedCheese of relatedCheeses) {
                 let relatedCheeseDoc = await RelatedCheese.findOneAndUpdate(
-                    { name: relatedCheese.name }, // Search criteria based on name
-                    relatedCheese, // Data to update or insert
-                    { upsert: true, new: true } // Options to insert if not found, and return the updated document
+                    { name: relatedCheese.name }, 
+                    relatedCheese, 
+                    { upsert: true, new: true }
                 );
-                relatedCheeseIds.push(relatedCheeseDoc._id); // Store the ID of the related cheese document
+                relatedCheeseIds.push(relatedCheeseDoc._id);
             }
         }
 
-        // Update the main Cheese document with the new data.
         const updatedCheese = await Cheese.findByIdAndUpdate(
-            req.params.id, // The ID of the cheese to update, taken from the request parameters
+            req.params.id, 
             {
-                ...cheeseData, // Spread operator to include the other cheese data
-                origin: originDoc ? originDoc._id : undefined, // If originDoc exists, update the origin field
-                taste: tasteDoc ? tasteDoc._id : undefined, // If tasteDoc exists, update the taste field
-                relatedCheeses: relatedCheeseIds.length > 0 ? relatedCheeseIds : undefined // Update related cheeses if any are provided
+                ...cheeseData, 
+                origin: originDoc ? originDoc._id : undefined, 
+                taste: tasteDoc ? tasteDoc._id : undefined, 
+                relatedCheeses: relatedCheeseIds.length > 0 ? relatedCheeseIds : undefined 
             },
-            { new: true, runValidators: true } // Options to return the new document and run schema validators
-        ).populate('origin').populate('taste').populate('relatedCheeses'); // Populate the referenced fields
+            { new: true, runValidators: true } 
+        ).populate('origin').populate('taste').populate('relatedCheeses');
 
-        // If the cheese was not found, return a 404 status with an error message.
         if (!updatedCheese) {
             return res.status(404).json({
                 success: false,
@@ -244,21 +285,18 @@ const updateCheeseById = async (req, res) => {
             });
         }
 
-        // If the update is successful, return the updated cheese data with a success message.
         res.status(200).json({
             success: true,
-            data: updatedCheese, // The updated cheese document with populated fields
-            message: 'Cheese updated successfully' // Success message
+            data: updatedCheese, 
+            message: 'Cheese updated successfully'
         });
     } catch (error) {
-        // Catch and log any errors that occur during the process.
         console.error('Error in updateCheeseById:', error);
 
-        // Return a 500 status with a server error message.
         res.status(500).json({
             success: false,
-            message: 'Server Error', // General server error message
-            error: error.message // Specific error message for debugging
+            message: 'Server Error', 
+            error: error.message 
         });
     }
 };
@@ -266,49 +304,43 @@ const updateCheeseById = async (req, res) => {
 // Function to delete a cheese entry by its ID
 const deleteCheeseByID = async (req, res) => {
     try {
-        // Validate that the provided ID is a valid MongoDB ObjectId.
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({
                 success: false,
-                message: 'Invalid ID format' // Error message for invalid ID
+                message: 'Invalid ID format' 
             });
         }
 
-        // Find and delete the cheese document by its ID.
         const deletedCheese = await Cheese.findByIdAndDelete(req.params.id);
 
-        // If the cheese was not found, return a 404 status with an error message.
         if (!deletedCheese) {
             return res.status(404).json({
                 success: false,
-                message: 'Cheese not found' // Error message for not found
+                message: 'Cheese not found' 
             });
         }
 
-        // If the deletion is successful, return the deleted cheese ID with a success message.
         res.status(200).json({
-            id: req.params.id, // The ID of the deleted cheese
-            success: true, // Success flag
-            message: 'Cheese deleted successfully' // Success message
+            id: req.params.id, 
+            success: true, 
+            message: 'Cheese deleted successfully' 
         });
     } catch (error) {
-        // Catch and log any errors that occur during the process.
         console.error('Error in deleteCheeseByID:', error);
 
-        // Return a 500 status with a server error message.
         res.status(500).json({
             success: false,
-            message: 'Server Error', // General server error message
-            error: error.message // Specific error message for debugging
+            message: 'Server Error', 
+            error: error.message 
         });
     }
 };
 
 // Exporting the functions to be used in other parts of the application
 module.exports = {
-    getAllCheeseTypes, // Function to get all cheeses
-    getCheeseTypeById, // Function to get a cheese by its ID
-    createCheese, // Function to create a new cheese
-    updateCheeseById, // Function to update an existing cheese by its ID
-    deleteCheeseByID // Function to delete a cheese by its ID
+    getAllCheeseTypes, 
+    getCheeseTypeById, 
+    createCheese, 
+    updateCheeseById, 
+    deleteCheeseByID 
 };

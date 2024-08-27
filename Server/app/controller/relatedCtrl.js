@@ -1,12 +1,28 @@
 const mongoose = require('mongoose');
 const RelatedCheese = require('../models/relatedCheeseSchema');
 const Cheese = require('../models/cheeseModel');
+const Origin = require('../models/originSchema');
+const Taste = require('../models/tasteSchema');
 const Messages = require('../utils/messages');
+const buildSearchCriteria = require('../utils/search'); // Importing the search criteria builder
 
-// Fetch all related cheeses with populated fields
 const getAllRelatedCheeses = async (req, res) => {
     try {
-        const relatedCheeses = await RelatedCheese.find({})
+        const page = parseInt(req.query.page) || 1; 
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit; 
+        const sortBy = req.query.sortBy || 'name'; 
+        const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1;
+
+        let query = {};
+
+        const searchTerm = req.query.search ? req.query.search.trim() : '';
+        if (searchTerm && searchTerm !== 'getAll') {
+            const searchRegex = new RegExp(searchTerm, 'i');
+            query = { name: searchRegex };
+        }
+
+        const relatedCheeses = await RelatedCheese.find(query)
             .populate({
                 path: 'cheese',
                 select: 'name age nutrition origin taste relatedCheeses',
@@ -15,7 +31,10 @@ const getAllRelatedCheeses = async (req, res) => {
                     { path: 'taste', select: 'flavor texture aroma pairings' },
                     { path: 'relatedCheeses', select: 'name relationType' }
                 ]
-            });
+            })
+            .sort({ [sortBy]: sortOrder })
+            .skip(skip)
+            .limit(limit);
 
         res.status(200).json({
             success: true,
@@ -33,7 +52,6 @@ const getAllRelatedCheeses = async (req, res) => {
     }
 };
 
-// Fetch a specific related cheese by ID with populated fields
 const getRelatedCheeseById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -76,22 +94,28 @@ const getRelatedCheeseById = async (req, res) => {
     }
 };
 
-// Create a new related cheese entry
 const createRelatedCheese = async (req, res) => {
-  try {
-    const relatedCheeseData = req.body;
-    const relatedCheese = new RelatedCheese(relatedCheeseData);
+    try {
+        const relatedCheeseData = req.body;
+        const relatedCheese = new RelatedCheese(relatedCheeseData);
 
-    await relatedCheese.save();
+        await relatedCheese.save();
 
-    res.status(201).json({ success: true, data: relatedCheese, message: Messages.CHEESE_CREATED });
-  } catch (error) {
-    console.error('Error in createRelatedCheese:', error);
-    res.status(400).json({ success: false, message: Messages.ERROR_CREATING_CHEESE, error: error.message });
-  }
+        res.status(201).json({
+            success: true,
+            data: relatedCheese,
+            message: Messages.CHEESE_CREATED
+        });
+    } catch (error) {
+        console.error('Error in createRelatedCheese:', error);
+        res.status(400).json({
+            success: false,
+            message: Messages.ERROR_CREATING_CHEESE,
+            error: error.message
+        });
+    }
 };
 
-// Update an existing related cheese entry by ID
 const updateRelatedCheeseById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -105,8 +129,7 @@ const updateRelatedCheeseById = async (req, res) => {
             req.params.id,
             req.body,
             { new: true }
-        )
-        .populate({
+        ).populate({
             path: 'cheese',
             select: 'name age nutrition origin taste relatedCheeses',
             populate: [
@@ -138,7 +161,6 @@ const updateRelatedCheeseById = async (req, res) => {
     }
 };
 
-// Delete a related cheese entry by ID
 const deleteRelatedCheeseById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -149,6 +171,7 @@ const deleteRelatedCheeseById = async (req, res) => {
         }
 
         const deletedRelatedCheese = await RelatedCheese.findByIdAndDelete(req.params.id);
+
         if (!deletedRelatedCheese) {
             return res.status(404).json({
                 success: false,

@@ -1,44 +1,63 @@
-const Origin = require('../models/originSchema');
-const Cheese = require('../models/cheeseModel');
-const RelatedCheese = require('../models/relatedCheeseSchema');
-const Taste = require('../models/tasteSchema');
-const Messages = require('../utils/messages');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // Importing Mongoose for interacting with MongoDB
+const Origin = require('../models/originSchema'); // Importing the Origin model
+const Cheese = require('../models/cheeseModel'); // Importing the Cheese model
+const RelatedCheese = require('../models/relatedCheeseSchema'); // Importing the RelatedCheese model
+const Taste = require('../models/tasteSchema'); // Importing the Taste model
+const Messages = require('../utils/messages'); // Importing custom messages for responses
+const buildSearchCriteria = require('../utils/search'); // Importing the search criteria builder
 
-// Fetch all origins with related data populated
+// Function to retrieve all origins, optionally filtered by a search term
 const getAllCheeseOrigins = async (req, res) => {
     try {
-        const origins = await Origin.find({})
-            .populate({
-                path: 'cheeses',
-                select: 'name age nutrition ingredients',
-                populate: [
-                    { path: 'taste', select: 'flavor texture aroma pairings' },
-                    { path: 'relatedCheeses', select: 'name relationType' }
+        const page = parseInt(req.query.page) || 1; 
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit; 
+        const sortBy = req.query.sortBy || 'country'; 
+        const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1;
+
+        let query = {};
+
+        const searchTerm = req.query.search ? req.query.search.trim() : '';
+        if (searchTerm && searchTerm !== 'getAll') {
+            const searchRegex = new RegExp(searchTerm, 'i');
+            query = {
+                $or: [
+                    { country: searchRegex },
+                    { region: searchRegex },
+                    { village: searchRegex },
+                    { history: searchRegex }
                 ]
-            })
+            };
+        }
+
+        const origins = await Origin.find(query)
+            .populate('cheeses', 'name age')
             .populate('relatedCheeses', 'name relationType')
-            .populate('tastes', 'flavor texture aroma pairings');
+            .populate('tastes', 'flavor texture aroma')
+            .sort({ [sortBy]: sortOrder })
+            .skip(skip)
+            .limit(limit);
 
         res.status(200).json({
             success: true,
             count: origins.length,
             data: origins,
-            message: `${req.method} - Request made to origin endpoint`
+            message: origins.length > 0 ? 'Origins retrieved successfully.' : 'No results found for the search term.'
         });
     } catch (error) {
         console.error('Error in getAllCheeseOrigins:', error);
         res.status(500).json({
             success: false,
-            message: Messages.SERVER_ERROR,
+            message: 'Server Error',
             error: error.message
         });
     }
 };
 
-// Fetch a specific origin by ID with related data populated
+// Function to retrieve a single origin by ID
 const getCheeseOriginById = async (req, res) => {
     try {
+        // Validate the ID
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({
                 success: false,
@@ -46,14 +65,11 @@ const getCheeseOriginById = async (req, res) => {
             });
         }
 
+        // Find the origin by ID and populate related fields
         const origin = await Origin.findById(req.params.id)
-            .populate({
-                path: 'cheeses',
-                populate: [
-                    { path: 'taste', select: 'flavor texture aroma pairings' },
-                    { path: 'relatedCheeses', select: 'name relationType' }
-                ]
-            });
+            .populate('cheeses', 'name age nutrition ingredients') // Populate cheeses with additional fields
+            .populate('relatedCheeses', 'name relationType') // Populate related cheeses
+            .populate('tastes', 'flavor texture aroma pairings'); // Populate tastes
 
         if (!origin) {
             return res.status(404).json({
@@ -65,22 +81,24 @@ const getCheeseOriginById = async (req, res) => {
         res.status(200).json({
             success: true,
             data: origin,
-            message: `${req.method} - Request made to origin endpoint with id ${req.params.id}`
+            message: 'Origin retrieved successfully'
         });
     } catch (error) {
+        console.error('Error in getCheeseOriginById:', error);
         res.status(500).json({
             success: false,
-            message: Messages.SERVER_ERROR,
+            message: 'Server Error',
             error: error.message
         });
     }
 };
 
-// Create a new origin with related data linked
+// Function to create a new origin
 const createOrigin = async (req, res) => {
     try {
         const { cheeses, relatedCheeses, tastes, ...originData } = req.body;
 
+        // Find IDs of the related entities based on their names/flavors
         const cheeseIds = await Cheese.find({
             name: { $in: cheeses.map(c => c.name) }
         }).select('_id');
@@ -93,6 +111,7 @@ const createOrigin = async (req, res) => {
             flavor: { $in: tastes.map(t => t.flavor) }
         }).select('_id');
 
+        // Create a new Origin document with the collected data
         const origin = new Origin({
             ...originData,
             cheeses: cheeseIds,
@@ -100,6 +119,7 @@ const createOrigin = async (req, res) => {
             tastes: tasteIds
         });
 
+        // Save the new Origin document to the database
         await origin.save();
 
         res.status(201).json({
@@ -108,14 +128,16 @@ const createOrigin = async (req, res) => {
             message: Messages.CHEESE_CREATED
         });
     } catch (error) {
+        console.error('Error in createOrigin:', error);
         res.status(400).json({
             success: false,
-            message: error.message
+            message: Messages.ERROR_CREATING_CHEESE,
+            error: error.message
         });
     }
 };
 
-// Update an existing origin by ID
+// Function to update an existing origin by ID
 const updateOriginById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -125,7 +147,28 @@ const updateOriginById = async (req, res) => {
             });
         }
 
-        const updatedOrigin = await Origin.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { cheeses, relatedCheeses, tastes, ...originData } = req.body;
+
+        // Find IDs of the related entities based on their names/flavors
+        const cheeseIds = await Cheese.find({
+            name: { $in: cheeses.map(c => c.name) }
+        }).select('_id');
+
+        const relatedCheeseIds = await RelatedCheese.find({
+            name: { $in: relatedCheeses.map(rc => rc.name) }
+        }).select('_id');
+
+        const tasteIds = await Taste.find({
+            flavor: { $in: tastes.map(t => t.flavor) }
+        }).select('_id');
+
+        // Update the Origin document by ID with the new data
+        const updatedOrigin = await Origin.findByIdAndUpdate(req.params.id, {
+            ...originData,
+            cheeses: cheeseIds,
+            relatedCheeses: relatedCheeseIds,
+            tastes: tasteIds
+        }, { new: true });
 
         if (!updatedOrigin) {
             return res.status(404).json({
@@ -140,14 +183,16 @@ const updateOriginById = async (req, res) => {
             message: Messages.CHEESE_UPDATED
         });
     } catch (error) {
+        console.error('Error in updateOriginById:', error);
         res.status(500).json({
             success: false,
-            message: Messages.SERVER_ERROR
+            message: Messages.SERVER_ERROR,
+            error: error.message
         });
     }
 };
 
-// Delete an origin by ID
+// Function to delete an origin by ID
 const deleteOriginById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -171,9 +216,11 @@ const deleteOriginById = async (req, res) => {
             message: Messages.CHEESE_DELETED
         });
     } catch (error) {
+        console.error('Error in deleteOriginById:', error);
         res.status(500).json({
             success: false,
-            message: Messages.SERVER_ERROR
+            message: Messages.SERVER_ERROR,
+            error: error.message
         });
     }
 };

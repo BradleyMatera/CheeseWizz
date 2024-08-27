@@ -2,11 +2,25 @@ const Taste = require('../models/tasteSchema');
 const Cheese = require('../models/cheeseModel');
 const Messages = require('../utils/messages');
 const mongoose = require('mongoose');
+const buildSearchCriteria = require('../utils/search'); // Importing the search criteria builder
 
-// Fetch all tastes with related cheeses and origins populated
 const getAllCheeseTastes = async (req, res) => {
     try {
-        const tastes = await Taste.find({})
+        const page = parseInt(req.query.page) || 1; 
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit; 
+        const sortBy = req.query.sortBy || 'flavor'; 
+        const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1;
+
+        let query = {};
+
+        const searchTerm = req.query.search ? req.query.search.trim() : '';
+        if (searchTerm && searchTerm !== 'getAll') {
+            const searchRegex = new RegExp(searchTerm, 'i');
+            query = { flavor: searchRegex };
+        }
+
+        const tastes = await Taste.find(query)
             .populate({
                 path: 'cheeses',
                 select: 'name age nutrition origin',
@@ -14,7 +28,10 @@ const getAllCheeseTastes = async (req, res) => {
                     path: 'origin',
                     select: 'country region'
                 }
-            });
+            })
+            .sort({ [sortBy]: sortOrder })
+            .skip(skip)
+            .limit(limit);
 
         res.status(200).json({
             success: true,
@@ -32,7 +49,6 @@ const getAllCheeseTastes = async (req, res) => {
     }
 };
 
-// Fetch a specific taste by ID with related cheeses and origins populated
 const getCheeseTasteById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -63,19 +79,22 @@ const getCheeseTasteById = async (req, res) => {
             message: Messages.CHEESE_RETRIEVED
         });
     } catch (error) {
+        console.error('Error in getCheeseTasteById:', error);
         res.status(500).json({
             success: false,
-            message: Messages.SERVER_ERROR
+            message: Messages.SERVER_ERROR,
+            error: error.message
         });
     }
 };
 
-// Create a new taste with related cheeses linked
 const createTaste = async (req, res) => {
     try {
         const { cheeses, ...tasteData } = req.body;
 
-        const cheeseIds = await Cheese.find({ name: { $in: cheeses.map(c => c.name) } }).select('_id');
+        const cheeseIds = await Cheese.find({
+            name: { $in: cheeses.map(c => c.name) }
+        }).select('_id');
 
         const taste = new Taste({
             ...tasteData,
@@ -89,14 +108,15 @@ const createTaste = async (req, res) => {
             message: Messages.CHEESE_CREATED
         });
     } catch (error) {
+        console.error('Error in createTaste:', error);
         res.status(400).json({
             success: false,
-            message: error.message
+            message: Messages.ERROR_CREATING_CHEESE,
+            error: error.message
         });
     }
 };
 
-// Update an existing taste entry by ID
 const updateTasteById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -106,7 +126,16 @@ const updateTasteById = async (req, res) => {
             });
         }
 
-        const updatedTaste = await Taste.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { cheeses, ...tasteData } = req.body;
+
+        const cheeseIds = await Cheese.find({
+            name: { $in: cheeses.map(c => c.name) }
+        }).select('_id');
+
+        const updatedTaste = await Taste.findByIdAndUpdate(req.params.id, {
+            ...tasteData,
+            cheeses: cheeseIds
+        }, { new: true });
 
         if (!updatedTaste) {
             return res.status(404).json({
@@ -130,7 +159,6 @@ const updateTasteById = async (req, res) => {
     }
 };
 
-// Delete a taste entry by ID
 const deleteTasteById = async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -141,6 +169,7 @@ const deleteTasteById = async (req, res) => {
         }
 
         const deletedTaste = await Taste.findByIdAndDelete(req.params.id);
+
         if (!deletedTaste) {
             return res.status(404).json({
                 success: false,
@@ -153,9 +182,11 @@ const deleteTasteById = async (req, res) => {
             message: Messages.CHEESE_DELETED
         });
     } catch (error) {
+        console.error('Error in deleteTasteById:', error);
         res.status(500).json({
             success: false,
-            message: Messages.SERVER_ERROR
+            message: Messages.SERVER_ERROR,
+            error: error.message
         });
     }
 };

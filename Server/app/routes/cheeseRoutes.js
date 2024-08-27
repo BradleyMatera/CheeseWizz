@@ -1,37 +1,35 @@
 const express = require('express');
 const router = express.Router();
-
-// Import controller functions
-const {
-    getAllCheeseTypes,
-    getCheeseTypeById,
-    createCheese,
-    updateCheeseById,
-    deleteCheeseByID
+const { 
+  getAllCheeseTypes,
+  getCheeseTypeById,
+  createCheese,
+  updateCheeseById,
+  deleteCheeseByID
 } = require("../controller/bigCtrl");
 
-const {                             
-    getAllCheeseOrigins,
-    getCheeseOriginById,
-    createOrigin,
-    updateOriginById,
-    deleteOriginById
+const {
+  getAllCheeseOrigins,
+  getCheeseOriginById,
+  createOrigin,
+  updateOriginById,
+  deleteOriginById
 } = require("../controller/originCtrl");
 
 const {
-    getAllCheeseTastes,
-    getCheeseTasteById,
-    createTaste,
-    updateTasteById,
-    deleteTasteById
+  getAllCheeseTastes,
+  getCheeseTasteById,
+  createTaste,
+  updateTasteById,
+  deleteTasteById
 } = require("../controller/tasteCtrl");
 
 const {
-    getAllRelatedCheeses,
-    getRelatedCheeseById,
-    createRelatedCheese,
-    updateRelatedCheeseById,
-    deleteRelatedCheeseById
+  getAllRelatedCheeses,
+  getRelatedCheeseById,
+  createRelatedCheese,
+  updateRelatedCheeseById,
+  deleteRelatedCheeseById
 } = require("../controller/relatedCtrl");
 
 // Cheese routes
