@@ -51,6 +51,8 @@ function App() {
       <SearchBar onSubmit={handleSearch} />
 
       {/* DisplayCheeses component for displaying search results */}
+
+      <h3> Results </h3>
       <DisplayCheeses results={results} />
     </>
   );
