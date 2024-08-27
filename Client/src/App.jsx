@@ -11,7 +11,7 @@ function App() {
 
     try {
       let response;
-// add thease if else statements to handle all the different collections
+// Add thease if else statements to handle all the different collections
   // Check if the collection is "cheese"
   if (collection === "cheese") {
     // If true, call the API method to fetch all cheeses based on the searchTerm
@@ -34,7 +34,7 @@ function App() {
       }
 
 
-      setResults(response); // Update the state with the search results
+      setResults(response); // Update the usetate with the search results
       console.log("Response received:", response);
     } catch (error) {
       console.error("There was an error with the CheeseWizz API:", error.message);
@@ -42,19 +42,30 @@ function App() {
     }
   };
 
+
   return (
     <>
+      {/* Main title for the Cheese Finder application */}
       <h1>Cheese Finder</h1>
+
+      {/* Search bar component for handling user input */}
       <SearchBar onSubmit={handleSearch} />
+
+      {/* Container for displaying search results */}
       <div className="results">
         {results.length > 0 ? (
+          // If results are found, map over each item and display it
           results.map((item) => (
             <div key={item._id} className="item">
+              {/* Display the name of the item */}
               <h3>{item.name}</h3>
+              
+              {/* Display the item's description, flavor, or country; if none are available, show a default message */}
               <p>{item.description || item.flavor || item.country || "No additional info"}</p>
             </div>
           ))
         ) : (
+          // If no results are found, display a message indicating this
           <p>No results found.</p>
         )}
       </div>
