@@ -1,5 +1,5 @@
 import React from "react";
-
+import './styles/DisplayCheeses.scss';
 /**
  * Renders an array of items.
  * @param {Array} arr - The array to be rendered.

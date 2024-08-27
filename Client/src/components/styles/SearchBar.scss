@@ -1,0 +1,117 @@
+/* Variables for consistent styling across the component */
+$primary-color: #ae954a;
+$secondary-color: #92e350;
+$input-background: #eacece;
+$button-background: $primary-color;
+$button-hover: darken($primary-color, 10%);
+$border-radius: 8px;
+$transition-speed: 0.3s;
+
+/* Main container for the search bar */
+.search-bar {
+  padding: 20px;
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  border-radius: $border-radius;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Title within the search bar */
+.search-bar h3 {
+  margin-bottom: 15px;
+  color: #fff;
+  font-size: 1.8em;
+  animation: fadeInDown $transition-speed ease-in-out;
+}
+
+/* Keyframes for fade-in-down animation */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Styling the form elements */
+.search-bar form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Label styles for input and select fields */
+.search-bar label {
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 5px;
+  font-size: 1.2em;
+}
+
+/* Select dropdown styling */
+.search-bar select {
+  width: 100%;
+  padding: 10px;
+  background-color: $input-background;
+  border: 2px solid transparent;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 1em;
+  margin-bottom: 15px;
+  transition: border-color $transition-speed ease;
+
+  /* Border and background change on focus */
+  &:focus {
+    border-color: $primary-color;
+    background-color: darken($input-background, 5%);
+  }
+}
+
+/* Input field styling */
+.search-bar input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  background-color: $input-background;
+  border: 2px solid transparent;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 1em;
+  margin-bottom: 15px;
+  transition: border-color $transition-speed ease;
+
+  /* Border and background change on focus */
+  &:focus {
+    border-color: $primary-color;
+    background-color: darken($input-background, 5%);
+  }
+}
+
+/* Styling the search button */
+.search-bar button {
+  background-color: $button-background;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  font-size: 1.2em;
+  transition: background-color $transition-speed ease, transform $transition-speed ease;
+
+  /* Button hover effect */
+  &:hover {
+    background-color: $button-hover;
+    transform: scale(1.05); /* Slight scale on hover */
+  }
+
+  /* Active state for button */
+  &:active {
+    transform: scale(0.98); /* Slight shrink on click */
+  }
+}

@@ -1,3 +1,4 @@
+@import './tailwind.css';
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +40,93 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Background image for the entire application */
+body {
+  background-image: url('https://media.istockphoto.com/id/1289871332/photo/red-waxed-yellow-cheddar-cheese-close-up.jpg?s=1024x1024&w=is&k=20&c=y-PRRnA5wzfctco5n_ivrYLZGnewCmhNXwUSez6Q0O0=');
+  background-size: cover; /* Ensures the image covers the entire background */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  font-family: 'Inter', sans-serif; /* Custom font for a clean and modern look */
+  color: #ffffff; /* White text to contrast with the dark background */
+}
+
+/* Container for the root element */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background for readability */
+  border-radius: 8px; /* Slightly rounded corners for a modern look */
+}
+
+/* Title Styling */
+h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #f3bc42; /* Cheddar yellow color to match the theme */
+}
+
+/* Styling for the Search Bar */
+.search-bar {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+  border-radius: 8px;
+  backdrop-filter: blur(5px); /* Blurs the background behind the search bar */
+}
+
+/* Styling for Search Bar Inputs */
+.search-bar label {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #f3bc42; /* Cheddar yellow for labels */
+}
+
+.search-bar input,
+.search-bar select {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: none;
+  margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0.8); /* Slightly opaque input background */
+}
+
+/* Search Button Styling */
+.search-bar button {
+  padding: 0.5rem 1rem;
+  background-color: #f3bc42; /* Cheddar yellow button */
+  border: none;
+  border-radius: 4px;
+  color: #000;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+  background-color: #d1a135; /* Darker yellow on hover */
+}
+
+/* Results Container Styling */
+.results {
+  margin-top: 2rem;
+}
+
+/* Individual Item Styling */
+.results .item {
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black for items */
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  color: #ffffff; /* Ensure text is visible on dark background */
+}
+
+.results h3 {
+  color: #f3bc42; /* Cheddar yellow for item titles */
+}
+
+.results p {
+  color: #ffffff;
 }

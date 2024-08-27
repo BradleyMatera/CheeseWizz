@@ -42,20 +42,27 @@ function App() {
     }
   };
 
-  return (
-    <>
-      {/* Main title for the Cheese Finder application */}
-      <h1>Cheese Finder</h1>
+return (
+  <>
+    {/* Main title for the Cheese Finder application */}
+    <h1 className="text-4xl font-extrabold text-yellow-800 text-center my-8">
+      Cheese Finder
+    </h1>
 
-      {/* Search bar component for handling user input */}
+    {/* Search bar component for handling user input */}
+    <div className="flex justify-center mb-8">
       <SearchBar onSubmit={handleSearch} />
+    </div>
 
+    {/* Results section */}
+    <div className="max-w-4xl mx-auto">
+      <h3 className="text-2xl font-bold text-yellow-800 mb-4">Results</h3>
+      
       {/* DisplayCheeses component for displaying search results */}
-
-      <h3> Results </h3>
       <DisplayCheeses results={results} />
-    </>
-  );
+    </div>
+  </>
+);
 }
 
 export default App;

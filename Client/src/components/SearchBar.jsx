@@ -1,3 +1,5 @@
+import './styles/SearchBar.scss';
+import React from "react";
 import { useState } from "react";
 
 function SearchBar({ onSubmit }) {
@@ -30,38 +32,53 @@ function SearchBar({ onSubmit }) {
   };
 
   return (
-    <div className="search-bar">
-      <h3>Search Bar</h3>
-      <form onSubmit={handleSubmit}>
-        {/* Dropdown to select the collection to search within */}
-        <label htmlFor="collection">Collection:</label>
-        <select
-          id="collection"
-          name="collection"
-          value={collection}
-          onChange={handleCollectionChange}
-        >
-          <option value="cheese">Cheeses</option>
-          <option value="origin">Origins</option>
-          <option value="taste">Tastes</option>
-          <option value="relatedCheese">Related Cheeses</option>
-        </select>
-
-        {/* Input field to enter the search term */}
-        <label htmlFor="search">Search:</label>
-        <input
-          type="text"
-          id="search"
-          name="search"
-          value={term}
-          onChange={handleSearchChange}
-          placeholder="Enter a search term"
-        />
-
-        {/* Button to submit the search form */}
-        <button type="submit">Search</button>
-      </form>
+<div className="search-bar bg-yellow-100 p-6 rounded-lg shadow-lg max-w-md mx-auto">
+  <h3 className="text-2xl font-bold text-yellow-900 mb-4">Search Bar</h3>
+  <form onSubmit={handleSubmit} className="space-y-4">
+    {/* Dropdown to select the collection to search within */}
+    <div className="flex flex-col">
+      <label htmlFor="collection" className="text-lg font-semibold text-yellow-800 mb-2">
+        Collection:
+      </label>
+      <select
+        id="collection"
+        name="collection"
+        value={collection}
+        onChange={handleCollectionChange}
+        className="p-2 rounded-lg border border-yellow-300 text-yellow-900 bg-yellow-50 focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+      >
+        <option value="cheese">Cheeses</option>
+        <option value="origin">Origins</option>
+        <option value="taste">Tastes</option>
+        <option value="relatedCheese">Related Cheeses</option>
+      </select>
     </div>
+
+    {/* Input field to enter the search term */}
+    <div className="flex flex-col">
+      <label htmlFor="search" className="text-lg font-semibold text-yellow-800 mb-2">
+        Search:
+      </label>
+      <input
+        type="text"
+        id="search"
+        name="search"
+        value={term}
+        onChange={handleSearchChange}
+        placeholder="Enter a search term"
+        className="p-2 rounded-lg border border-yellow-300 text-yellow-900 bg-yellow-50 focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+      />
+    </div>
+
+    {/* Submit button */}
+    <button
+      type="submit"
+      className="w-full bg-yellow-600 text-white font-bold py-2 rounded-lg hover:bg-yellow-700 transition duration-300 ease-in-out transform hover:scale-105"
+    >
+      Search
+    </button>
+  </form>
+</div>
   );
 }
 
