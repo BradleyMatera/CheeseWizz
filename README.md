@@ -55,6 +55,60 @@ The **CheeseWizz** project is a comprehensive cheese database application design
 - **Responsive Design**  
   Utilized Tailwind CSS for a responsive and modern UI design, ensuring a consistent look across different devices and screen sizes.
 
+#### Shader System Details
+
+The CheeseWizz project implements a visually appealing shader background using Three.js and React Three Fiber. This creates an immersive and dynamic user experience. The shader system consists of several key components:
+
+##### Fragment Shader (`FragmentShader.jsx`)
+
+The fragment shader is responsible for rendering the starry plane effect. It includes:
+
+- **Uniforms**: `uTime` and `iResolution` for time and resolution.
+- **Constants**: Various values like `pi`, `tau`, `planeDist`, `furthest`, and `fadeFrom`.
+- **Functions**: 
+  - `aces_approx`: Approximates ACES tone mapping.
+  - `offset`, `doffset`, `ddoffset`: Calculate plane offsets.
+  - `alphaBlend`: Blends colors based on alpha values.
+  - `pmin`, `pmax`, `pabs`: Smooth minimum, maximum, and absolute value calculations.
+  - `star5`: Calculates distance to a 5-pointed star shape.
+  - `palette`: Generates color palettes.
+  - `plane`: Calculates plane color and alpha.
+  - `color`: Main function for fragment color calculation.
+
+Credits: Shane (https://www.shadertoy.com/view/MfjyWK), with additional functions from Matt Taylor and Inigo Quilez.
+
+##### Star Shader (`StarShader.jsx`)
+
+Sets up the Three.js scene and applies the custom shader material:
+
+- Uses `shaderMaterial` from `@react-three/drei`.
+- Updates `uTime` uniform on each frame.
+- Renders `ShaderPlane` inside a full-viewport `Canvas`.
+
+##### Shader Background (`ShaderBackground.jsx`)
+
+Similar to `StarShader.jsx`, but used specifically for the background effect:
+
+- Updates `uTime` uniform on each frame.
+- Renders `ShaderPlane` in a full-viewport `Canvas`.
+
+##### Custom Shader Material (`CustomShaderMaterial.jsx`)
+
+Creates a custom shader material:
+
+- Uses `shaderMaterial` from `@react-three/drei`.
+- Imports vertex and fragment shaders.
+- Sets the material to be transparent.
+
+##### Vertex Shader (`VertexShader.jsx`)
+
+Transforms the vertices of the plane geometry:
+
+- Passes UV coordinates to the fragment shader.
+- Transforms vertex positions using projection and model-view matrices.
+
+These shader components work together to create a dynamic, starry background effect that enhances the visual appeal of the CheeseWizz application.
+
 ## 📂 Project Structure
 
 ### 📦 Models
@@ -187,6 +241,33 @@ The **CheeseWizz** project is a comprehensive cheese database application design
 
 - **Performance Optimization:**  
   Implement caching mechanisms and optimize database queries for faster response times.
+
+## 📚 Technology Stack & Documentation
+
+Here are the live links to all the documentation and sites for the technologies used in the CheeseWizz app:
+
+1. [MongoDB](https://www.mongodb.com/docs/)
+2. [Express](https://expressjs.com/en/starter/installing.html)
+3. [Mongoose](https://mongoosejs.com/docs/)
+4. [Node.js](https://nodejs.org/en/docs/)
+5. [Nodemon](https://nodemon.io/)
+6. [Jest](https://jestjs.io/docs/getting-started)
+7. [Axios](https://axios-http.com/docs/intro)
+8. [Cors](https://expressjs.com/en/resources/middleware/cors.html)
+9. [Dotenv](https://github.com/motdotla/dotenv#readme)
+10. [Morgan](https://github.com/expressjs/morgan#readme)
+11. [Three.js](https://threejs.org/docs/)
+12. [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
+13. [Tailwind CSS](https://tailwindcss.com/docs)
+14. [GLSL (OpenGL Shading Language)](https://www.khronos.org/opengl/wiki/OpenGL_Shading_Language)
+15. [ShaderToy](https://www.shadertoy.com/)
+16. [WebGL](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API)
+17. [Alpha Compositing](https://en.wikipedia.org/wiki/Alpha_compositing)
+18. [Inigo Quilez's Articles](https://www.iquilezles.org/www/articles/smin/smin.htm)
+19. [Inigo Quilez's Distance Functions](https://iquilezles.org/articles/distfunctions2d/)
+20. [Matt Taylor's Tonemapping](https://64.github.io/tonemapping/)
+
+These links cover the primary technologies and resources used in the CheeseWizz project, including those related to backend development, frontend frameworks, and shader programming.
 
 ## 📚 Conclusion
 

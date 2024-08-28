@@ -6,7 +6,7 @@ import fragmentShader from './FragmentShader';
 
 // Create a custom shader material using the vertex and fragment shaders
 const CustomShaderMaterial = shaderMaterial(
-  { uTime: 0 }, // Uniforms
+  { uTime: 0, iResolution: [window.innerWidth, window.innerHeight] }, // Uniforms
   vertexShader, // Vertex shader
   fragmentShader // Fragment shader
 );
