@@ -1,5 +1,6 @@
 import React from "react";
 import './styles/DisplayCheeses.scss';
+
 /**
  * Renders an array of items.
  * @param {Array} arr - The array to be rendered.
@@ -33,28 +34,15 @@ const renderArray = (arr) => (
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
  * @see https://reactjs.org/docs/jsx-in-depth.html#javascript-expressions-as-children
  */
-const renderObject = (obj) => {
-  if (!obj || typeof obj !== "object") {
-    return "No Data"; // Return "No Data" if the input is not a valid object.
-  }
-  return (
-    <ul>
-      {Object.entries(obj).map(([key, value], index) => (
-        <li key={index}>
-          <strong>{key}:</strong>{" "}
-          {Array.isArray(value)
-            ? renderArray(value) // Recursively render arrays.
-            : typeof value === "object" && value !== null
-              ? renderObject(value) // Recursively render nested objects.
-              : value !== null
-                ? value 
-                : "No Data" // Handle cases where values are null or undefined.
-          }
-        </li>
-      ))}
-    </ul>
-  );
-};
+const renderObject = (obj) => (
+  <ul>
+    {Object.entries(obj).map(([key, value], index) => (
+      <li key={index}>
+        <strong>{key}:</strong> {typeof value === "object" && value !== null ? renderObject(value) : value}
+      </li>
+    ))}
+  </ul>
+);
 
 /**
  * Displays a list of cheeses or other collection items.
@@ -74,7 +62,6 @@ function DisplayCheeses({ results }) {
         results.map((item) => (
           <div key={item._id} className="item">
             <h3>{item.name || "Unnamed Item"}</h3>
-            {/* Dynamically render the object's properties */}
             {renderObject(item)}
           </div>
         ))

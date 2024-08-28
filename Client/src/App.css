@@ -1,131 +1,62 @@
-@import './tailwind.css';
+@import './tailwind.css'; /* Import Tailwind CSS for utility classes */
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  max-width: 1280px; /* Set the maximum width of the root element */
+  margin: 0 auto; /* Center the root element horizontally */
+  padding: 2rem; /* Add padding around the root element */
+  text-align: center; /* Center-align the text */
+  position: relative; /* Set the position to relative for positioning child elements */
+  z-index: 1; /* Ensure it is above the ShaderBackground */
+  background: none; /* Remove any background */
+  font-family: 'Arial', sans-serif; /* Set the font family */
+  color: #333; /* Set the text color */
+  transition: background 0.5s ease; /* Smooth background transition */
+  border-radius: 8px; /* Slightly rounded corners for a modern look */
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+  height: 6em; /* Set the height of the logo */
+  padding: 1.5em; /* Add padding around the logo */
+  will-change: filter; /* Indicate that the filter property will change */
+  transition: filter 300ms; /* Smooth filter transition */
 }
+
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #646cffaa); /* Add a drop shadow on hover */
 }
+
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #61dafbaa); /* Add a React-specific drop shadow on hover */
 }
 
 @keyframes logo-spin {
   from {
-    transform: rotate(0deg);
+    transform: rotate(0deg); /* Start with no rotation */
   }
+
   to {
-    transform: rotate(360deg);
+    transform: rotate(360deg); /* Rotate 360 degrees */
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+    animation: logo-spin infinite 20s linear; /* Spin the logo infinitely */
   }
 }
 
 .card {
-  padding: 2em;
+  padding: 2em; /* Add padding around the card */
 }
 
 .read-the-docs {
-  color: #888;
+  color: #888; /* Set the text color for the "read the docs" section */
 }
 
-/* Background image for the entire application */
+/* Remove background image for the entire application */
 body {
-  background-image: url('https://media.istockphoto.com/id/1289871332/photo/red-waxed-yellow-cheddar-cheese-close-up.jpg?s=1024x1024&w=is&k=20&c=y-PRRnA5wzfctco5n_ivrYLZGnewCmhNXwUSez6Q0O0=');
-  background-size: cover; /* Ensures the image covers the entire background */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
-  font-family: 'Inter', sans-serif; /* Custom font for a clean and modern look */
-  color: #ffffff; /* White text to contrast with the dark background */
-}
-
-/* Container for the root element */
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background for readability */
-  border-radius: 8px; /* Slightly rounded corners for a modern look */
-}
-
-/* Title Styling */
-h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  color: #f3bc42; /* Cheddar yellow color to match the theme */
-}
-
-/* Styling for the Search Bar */
-.search-bar {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
-  border-radius: 8px;
-}
-
-/* Styling for Search Bar Inputs */
-.search-bar label {
-  font-weight: bold;
-  margin-right: 10px;
-  color: #f3bc42; /* Cheddar yellow for labels */
-}
-
-.search-bar input,
-.search-bar select {
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: none;
-  margin-right: 10px;
-  background-color: rgba(255, 255, 255, 0.8); /* Slightly opaque input background */
-}
-
-/* Search Button Styling */
-.search-bar button {
-  padding: 0.5rem 1rem;
-  background-color: #f3bc42; /* Cheddar yellow button */
-  border: none;
-  border-radius: 4px;
-  color: #000;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.search-bar button:hover {
-  background-color: #d1a135; /* Darker yellow on hover */
-}
-
-/* Results Container Styling */
-.results {
-  margin-top: 2rem;
-}
-
-/* Individual Item Styling */
-.results .item {
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black for items */
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  color: #ffffff; /* Ensure text is visible on dark background */
-}
-
-.results h3 {
-  color: #f3bc42; /* Cheddar yellow for item titles */
-}
-
-.results p {
-  color: #ffffff;
+  background: none; /* Remove any background */
+  font-family: 'Arial', sans-serif; /* Set the font family */
+  color: #333; /* Set the text color */
+  transition: background 0.5s ease; /* Smooth background transition */
 }

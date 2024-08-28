@@ -8,7 +8,7 @@ import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPromise from 'eslint-plugin-promise';
 
 export default [
-  { ignores: ['dist', 'node_modules'] }, // Ignore distribution and node_modules folders
+  { ignores: ['dist', 'node_modules'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -37,25 +37,23 @@ export default [
       ...eslintPluginImport.configs.recommended.rules,
       ...eslintPluginJsxA11y.configs.recommended.rules,
       ...eslintPluginPromise.configs.recommended.rules,
-
-      // Custom rules
-      'react/jsx-no-target-blank': 'off', // Disable warning for target="_blank" without rel="noopener noreferrer"
+      'react/jsx-no-target-blank': 'off',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      'no-console': 'warn', // Warn on console.log statements
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }], // Error on unused variables except those starting with _
+      'no-console': 'warn',
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'import/order': [
         'error',
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
           'newlines-between': 'always',
         },
-      ], // Enforce a specific order for imports
-      'jsx-a11y/anchor-is-valid': 'off', // Disable warning for invalid anchor elements (can adjust based on your usage)
-      'promise/always-return': 'off', // Disable requirement for return in promise chains
-      'promise/catch-or-return': 'error', // Enforce catch or return in promise chains
+      ],
+      'jsx-a11y/anchor-is-valid': 'off',
+      'promise/always-return': 'off',
+      'promise/catch-or-return': 'error',
     },
   },
 ];

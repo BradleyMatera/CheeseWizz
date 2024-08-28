@@ -1,5 +1,5 @@
 /* Variables for colors and gradients */
-$primary-color: #4A90E2;
+$primary-color: #e29c3f;
 $secondary-color: #50E3C2;
 $background-gradient: linear-gradient(135deg, $primary-color, $secondary-color);
 
@@ -11,6 +11,8 @@ $background-gradient: linear-gradient(135deg, $primary-color, $secondary-color);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow for more depth */
   margin-top: 20px;
   transition: transform 0.3s ease-in-out; /* Smooth transformation */
+  position: relative; /* Ensure relative positioning */
+  z-index: 2; /* Ensure it is above the ShaderBackground */
 
   /* Animation on hover */
   &:hover {
@@ -22,7 +24,6 @@ $background-gradient: linear-gradient(135deg, $primary-color, $secondary-color);
 .item {
   padding: 15px;
   margin-bottom: 20px;
-  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
   border-radius: 8px;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Subtle border */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Light shadow for each item */
@@ -82,7 +83,7 @@ ul li strong {
 /* Style for "No results found" message */
 .results p {
   font-size: 1.4em;
-  color: #ffffff;
+   color: #ffffff;
   text-align: center;
   margin-top: 20px;
   animation: fadeIn 1s ease-in-out; /* Fade-in animation for the message */
@@ -95,7 +96,7 @@ html {
 
 /* Subtle gradient background for the entire page */
 body {
-  background: linear-gradient(120deg, #fdfbfb, #ebedee);
+  background: none; /* Remove background gradient */
   font-family: 'Arial', sans-serif;
   color: #333;
   transition: background 0.5s ease; /* Smooth background transition */
