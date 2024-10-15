@@ -1,44 +1,27 @@
-// customErrors.js
+// utils/errors.js
+class ApiTestingError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "ApiTestingError";
+  }
+}
 
-// Invalid contact schema error
 class InvalidContactSchemaError extends Error {
-  constructor(message = 'The contact schema is invalid.') {
+  constructor(message) {
     super(message);
-    this.name = 'InvalidContactSchemaError';
-    this.statusCode = 400; // Bad Request
+    this.name = "InvalidContactSchemaError";
   }
 }
 
-// Contact not found error
-class ContactNotFoundError extends Error {
-  constructor(message = 'The requested contact was not found.') {
-    super(message);
-    this.name = 'ContactNotFoundError';
-    this.statusCode = 404; // Not Found
-  }
-}
-
-// Duplicate contact resource error
-class DuplicateContactResourceError extends Error {
-  constructor(message = 'A contact with the same details already exists.') {
-    super(message);
-    this.name = 'DuplicateContactResourceError';
-    this.statusCode = 409; // Conflict
-  }
-}
-
-// Pagination result count error
 class PaginationResultCountError extends Error {
-  constructor(message = 'Pagination result count is invalid.') {
+  constructor(message) {
     super(message);
     this.name = "PaginationResultCountError";
-    this.statusCode = 500; // Internal Server Error
   }
 }
 
 module.exports = {
+  ApiTestingError,
   InvalidContactSchemaError,
-  ContactNotFoundError,
-  DuplicateContactResourceError,
   PaginationResultCountError,
 };

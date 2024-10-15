@@ -1,62 +1,60 @@
-@import './tailwind.css'; /* Import Tailwind CSS for utility classes */
+@import './tailwind.css';
+/* Import Tailwind CSS for utility classes */
 
 #root {
-  max-width: 1280px; /* Set the maximum width of the root element */
-  margin: 0 auto; /* Center the root element horizontally */
-  padding: 2rem; /* Add padding around the root element */
-  text-align: center; /* Center-align the text */
-  position: relative; /* Set the position to relative for positioning child elements */
-  z-index: 1; /* Ensure it is above the ShaderBackground */
-  background: none; /* Remove any background */
-  font-family: 'Arial', sans-serif; /* Set the font family */
-  color: #333; /* Set the text color */
-  transition: background 0.5s ease; /* Smooth background transition */
-  border-radius: 8px; /* Slightly rounded corners for a modern look */
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background: none;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  transition: background 0.5s ease;
+  border-radius: 8px;
 }
 
-.logo {
-  height: 6em; /* Set the height of the logo */
-  padding: 1.5em; /* Add padding around the logo */
-  will-change: filter; /* Indicate that the filter property will change */
-  transition: filter 300ms; /* Smooth filter transition */
+.app-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa); /* Add a drop shadow on hover */
+.title {
+  color: #1e40af;
+  /* Blue color for title */
+  margin-bottom: 20px;
 }
 
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa); /* Add a React-specific drop shadow on hover */
+button {
+  background-color: #1e40af;
+  /* Tailwind CSS blue */
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg); /* Start with no rotation */
-  }
-
-  to {
-    transform: rotate(360deg); /* Rotate 360 degrees */
-  }
+button:hover {
+  background-color: #374151;
+  /* Darker shade on hover */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear; /* Spin the logo infinitely */
-  }
+.error-message {
+  color: red;
 }
 
-.card {
-  padding: 2em; /* Add padding around the card */
+.results-list {
+  list-style: none;
+  padding: 0;
 }
 
-.read-the-docs {
-  color: #888; /* Set the text color for the "read the docs" section */
-}
-
-/* Remove background image for the entire application */
-body {
-  background: none; /* Remove any background */
-  font-family: 'Arial', sans-serif; /* Set the font family */
-  color: #333; /* Set the text color */
-  transition: background 0.5s ease; /* Smooth background transition */
+.results-list li {
+  padding: 10px;
+  background-color: #e5e7eb;
+  /* Light gray background */
+  border-radius: 5px;
+  margin-bottom: 10px;
 }

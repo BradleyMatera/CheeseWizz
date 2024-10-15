@@ -1,13 +1,10 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
-// Vite configuration with buffer polyfill
-export default defineConfig({
-  plugins: [react()],
-  define: {
-    global: {},
+export default {
+  server: {
+    proxy: {
+      '/v1': {
+        target: 'http://localhost:8080', // Your API server
+        changeOrigin: true,
+      },
+    },
   },
-  optimizeDeps: {
-    include: ['buffer'],
-  },
-});
+};

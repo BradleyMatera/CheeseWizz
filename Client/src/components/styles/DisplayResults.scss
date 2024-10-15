@@ -1,0 +1,102 @@
+/* Variables for colors and gradients */
+$primary-color: #e29c3f;
+$secondary-color: #50E3C2;
+$background-gradient: linear-gradient(135deg, $primary-color, $secondary-color);
+
+/* General transition speeds and easing */
+$transition-speed: 0.3s;
+$easing: ease-in-out;
+
+/* Styles for the main container holding all the results */
+.results-container {
+  padding: 20px;
+  background: $background-gradient;
+  border-radius: 12px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+  transition: transform $transition-speed $easing;
+  position: relative;
+  z-index: 2;
+
+  /* Lift on hover */
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+/* Styles for the list holding the results */
+.results-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Styles for each item in the results list */
+.results-item {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color $transition-speed $easing, transform $transition-speed $easing;
+
+  /* Lift and background color change on hover */
+  &:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: translateY(-3px);
+  }
+}
+
+/* Heading styles for each item */
+.results-item h3 {
+  margin: 0;
+  font-size: 1.8em;
+  color: #333;
+  animation: fadeIn $transition-speed $easing;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* List styles for rendering arrays and objects */
+ul {
+  padding-left: 20px;
+  margin: 15px 0;
+  list-style-type: disc;
+  animation: slideIn 0.5s $easing;
+}
+
+/* Slide-in animation for lists */
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Strong tag styles for key labels in objects */
+ul li strong {
+  font-weight: bold;
+  color: $primary-color;
+}
+
+/* Style for "No results found" message */
+.results-container p {
+  font-size: 1.4em;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 20px;
+  animation: fadeIn $transition-speed $easing;
+}

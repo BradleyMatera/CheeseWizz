@@ -1,56 +1,100 @@
-import { useState } from "react";
-import ErrorBoundary from "./components/shaders/ErrorBoundary"; // Ensure this path is correct
-import StarShader from "./components/shaders/StarShader"; // Import StarShader component
+import React, { useState } from "react";
 import SearchBar from "./components/SearchBar";
-import DisplayCheeses from "./components/DisplayCheeses"; // Import DisplayCheeses component
-import API from "./API";
+import DisplayResults from "./components/DisplayResults";
+import ContactForm from "./components/ContactForm";
+import API from "./API/apis";
 import "./App.css";
 
-function App() {
+const App = () => {
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [editingContact, setEditingContact] = useState(null);
+  const [isCreating, setIsCreating] = useState(false);
 
   const handleSearch = async (collection, searchTerm) => {
-    console.log("Search Button Clicked!", collection, searchTerm);
-
+    setLoading(true);
+    setError(null);
     try {
-      let response;
-      if (collection === "cheese") {
-        response = await API.fetchAllCheeses(searchTerm);
-      } else if (collection === "origin") {
-        response = await API.fetchAllOrigins(searchTerm);
-      } else if (collection === "taste") {
-        response = await API.fetchAllTastes(searchTerm);
-      } else if (collection === "relatedCheese") {
-        response = await API.fetchAllRelatedCheeses(searchTerm);
-      }
-      setResults(response); // Update state with the search results
-      console.log("Response received:", response);
-    } catch (error) {
-      console.error("There was an error with the CheeseWizz API:", error.message);
-      alert("An error occurred while fetching the data. Please try again later.");
+      const response = await API.fetchAllContacts(searchTerm);
+      setResults(response.contacts);
+    } catch (err) {
+      console.error("Search failed:", err.message);
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const handleEdit = (contact) => {
+    setEditingContact(contact);
+    setIsCreating(false); // Not creating, just editing
+  };
+
+  const handleSave = async (updatedContact) => {
+    setLoading(true);
+    try {
+      if (isCreating) {
+        await API.createContact(updatedContact);
+      } else if (editingContact && editingContact._id) {
+        await API.updateContact(editingContact._id, updatedContact);
+      }
+      setEditingContact(null);
+      setIsCreating(false);
+      handleSearch("contacts", ""); // Reload the contact list after save
+    } catch (err) {
+      console.error("Save failed:", err.message);
+      setError("Save failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setEditingContact(null);
+    setIsCreating(false);
+  };
+
+  const handleCreate = () => {
+    setEditingContact(null);
+    setIsCreating(true);
+  };
+
+const handleDelete = async (id) => {
+  if (!id) {
+    console.error("Invalid contact ID");
+    return;
+  }
+
+  setLoading(true);
+  try {
+    await API.deleteContact(id); // Make sure the ID is passed correctly
+    handleSearch("contacts", ""); // Reload the contact list after delete
+  } catch (err) {
+    console.error("Delete failed:", err.message);
+    setError("Delete failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
   return (
-    <>
-      <StarShader />
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <h1 className="text-4xl font-extrabold text-yellow-800 text-center my-8">
-          Cheese Finder
-        </h1>
-        <p>App is rendering</p> {/* Add this line */}
-        <ErrorBoundary>
-          <div className="flex justify-center mb-8">
-            <SearchBar onSubmit={handleSearch} />
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-yellow-800 mb-4">Results</h3>
-            <DisplayCheeses results={results} />
-          </div>
-        </ErrorBoundary>
-      </div>
-    </>
+    <div className="app-container">
+      <h1 className="title">Contact Management</h1>
+
+      {!editingContact && !isCreating ? (
+        <>
+          <SearchBar onSubmit={handleSearch} isLoading={loading} />
+          <button onClick={handleCreate} className="create-button">Create Contact</button> {/* Create Contact button */}
+          {loading && <p>Loading results...</p>}
+          {error && <p className="error-message">Error: {error}</p>}
+          <DisplayResults results={results} onEdit={handleEdit} onDelete={handleDelete} />
+        </>
+      ) : (
+        <ContactForm contact={editingContact} onSave={handleSave} onCancel={handleCancel} />
+      )}
+    </div>
   );
-}
+};
 
 export default App;

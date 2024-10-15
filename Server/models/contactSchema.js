@@ -1,5 +1,5 @@
+// models/contactSchema.js
 const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2'); // Import the pagination plugin
 
 const contactSchema = new mongoose.Schema({
   fname: {
@@ -31,7 +31,14 @@ const contactSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Apply the pagination plugin
-contactSchema.plugin(mongoosePaginate);
+// Ensure that _id is transformed to id in the returned JSON
+contactSchema.set('toJSON', {
+  virtuals: true, // Include virtual fields
+  versionKey: false, // Remove __v
+  transform: (doc, ret) => {
+    ret.id = ret._id; // Map _id to id
+    delete ret._id; // Remove _id from the response
+  }
+});
 
 module.exports = mongoose.model('Contact', contactSchema);

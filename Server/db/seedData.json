@@ -1,0 +1,16 @@
+[
+  {
+    "fname": "John",
+    "lname": "Doe",
+    "email": "john.doe@example.com",
+    "phone": "1234567890",
+    "birthday": "1985-01-15"
+  },
+  {
+    "fname": "Jane",
+    "lname": "Smith",
+    "email": "jane.smith@example.com",
+    "phone": "0987654321",
+    "birthday": "1990-03-22"
+  }
+]

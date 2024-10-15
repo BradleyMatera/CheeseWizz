@@ -1,0 +1,16 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./db:/data/db
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/contactbook
+    depends_on:
+      - mongo
