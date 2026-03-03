@@ -1,8 +1,31 @@
-# React + Vite
+# CheeseWizz — Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React frontend for the CheeseWizz Cheese Finder application.
 
-Currently, two official plugins are available:
+## Stack
+- React 18
+- Vite
+- Tailwind CSS
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Setup
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Create a `.env` file in the `Client/` directory:
+   ```
+   VITE_GIPHY_API_KEY=your_key_here
+   VITE_UNSPLASH_ACCESS_KEY=your_key_here
+   VITE_GOOGLE_CLOUD_API_KEY=your_key_here
+   ```
+
+3. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+
+## Notes
+- The app fetches cheese data from the CheeseWizz API (see `../Server/`)
+- External API keys (Giphy, Unsplash, Google Translate) are optional — the app gracefully handles missing keys

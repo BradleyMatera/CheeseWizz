@@ -7,21 +7,21 @@ const contacts = [
     fname: 'John',
     lname: 'Doe',
     email: 'johndoe@example.com',
-    phone: '555-1234',
+    phone: '5551234567',
     birthday: '1985-05-15'
   },
   {
     fname: 'Jane',
     lname: 'Smith',
     email: 'janesmith@example.com',
-    phone: '555-5678',
+    phone: '5555678901',
     birthday: '1990-10-25'
   },
   {
     fname: 'Bob',
     lname: 'Johnson',
     email: 'bobjohnson@example.com',
-    phone: '555-8765',
+    phone: '5558765432',
     birthday: '1978-01-09'
   }
 ];
@@ -34,10 +34,7 @@ async function seedDatabase() {
     console.log("Connecting to MongoDB...");
 
     // Connect to MongoDB
-    await mongoose.connect('mongodb://127.0.0.1:27017/contactDB', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect('mongodb://127.0.0.1:27017/contactDB');
     console.log("MongoDB connection established successfully!");
 
     // Clear the existing data
