@@ -1,18 +1,18 @@
 const Messages = {
-    // Cheese-related messages
-    CHEESE_CREATED: 'Cheese created successfully',
-    CHEESE_UPDATED: 'Cheese updated successfully',
-    CHEESE_DELETED: 'Cheese deleted successfully',
-    CHEESE_NOT_FOUND: 'Cheese not found',
-    CHEESES_RETRIEVED: 'Cheeses retrieved successfully',
-    CHEESE_RETRIEVED: 'Cheese retrieved successfully',
+    // Contact-related messages
+    CONTACT_CREATED: 'Contact created successfully',
+    CONTACT_UPDATED: 'Contact updated successfully',
+    CONTACT_DELETED: 'Contact deleted successfully',
+    CONTACT_NOT_FOUND: 'Contact not found',
+    CONTACTS_RETRIEVED: 'Contacts retrieved successfully',
+    CONTACT_RETRIEVED: 'Contact retrieved successfully',
 
     // Error messages
-    ERROR_CREATING_CHEESE: 'Error creating cheese',
-    ERROR_UPDATING_CHEESE: 'Error updating cheese',
-    ERROR_DELETING_CHEESE: 'Error deleting cheese',
-    ERROR_RETRIEVING_CHEESES: 'Error retrieving cheeses',
-    ERROR_RETRIEVING_CHEESE: 'Error retrieving cheese',
+    ERROR_CREATING_CONTACT: 'Error creating contact',
+    ERROR_UPDATING_CONTACT: 'Error updating contact',
+    ERROR_DELETING_CONTACT: 'Error deleting contact',
+    ERROR_RETRIEVING_CONTACTS: 'Error retrieving contacts',
+    ERROR_RETRIEVING_CONTACT: 'Error retrieving contact',
 
     // General messages
     INVALID_ID: 'Invalid ID format',

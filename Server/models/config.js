@@ -17,10 +17,7 @@ const connectDB = async () => {
 
   try {
     // Attempt to connect to MongoDB using the provided URI
-    const conn = await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    const conn = await mongoose.connect(uri);
 
     // Log successful connection details
     console.log(`✅ MongoDB connected successfully to host: ${conn.connection.host}`);

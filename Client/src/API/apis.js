@@ -1,5 +1,21 @@
+// API_KEYS must be provided via environment variables.
+// Create a .env file in the Client/ directory with your keys (never commit it):
+// VITE_GIPHY_API_KEY=your_key_here
+// VITE_UNSPLASH_ACCESS_KEY=your_key_here
+// VITE_GOOGLE_CLOUD_API_KEY=your_key_here
+const API_KEYS = {
+  GIPHY_API_KEY: import.meta.env.VITE_GIPHY_API_KEY || null,
+  UNSPLASH_ACCESS_KEY: import.meta.env.VITE_UNSPLASH_ACCESS_KEY || null,
+  GOOGLE_CLOUD_API_KEY: import.meta.env.VITE_GOOGLE_CLOUD_API_KEY || null,
+  OPENAI_API_KEY: import.meta.env.VITE_OPENAI_API_KEY || null,
+};
+
 // Function to fetch a GIF from Giphy based on a search term
 export const fetchGif = (searchTerm) => {
+    if (!API_KEYS.GIPHY_API_KEY) {
+        console.warn('VITE_GIPHY_API_KEY is not set. Skipping GIF fetch.');
+        return Promise.resolve(null);
+    }
     const url = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEYS.GIPHY_API_KEY}&q=${searchTerm}&limit=1`;
     
     // Fetch the data from Giphy API
@@ -24,6 +40,10 @@ export const fetchGif = (searchTerm) => {
 
 // Function to fetch a random image from Unsplash based on a query
 export const fetchUnsplashImage = (query) => {
+    if (!API_KEYS.UNSPLASH_ACCESS_KEY) {
+        console.warn('VITE_UNSPLASH_ACCESS_KEY is not set. Skipping Unsplash fetch.');
+        return Promise.resolve({ urls: { regular: 'https://via.placeholder.com/400x200?text=Ad+Image' } });
+    }
     const url = `https://api.unsplash.com/photos/random?query=${query}&client_id=${API_KEYS.UNSPLASH_ACCESS_KEY}`;
     
     // Fetch the data from Unsplash API
@@ -42,6 +62,10 @@ export const fetchUnsplashImage = (query) => {
 
 // Function to translate text using Google Cloud API
 export const translateText = (text, targetLanguage) => {
+    if (!API_KEYS.GOOGLE_CLOUD_API_KEY) {
+        console.warn('VITE_GOOGLE_CLOUD_API_KEY is not set. Skipping translation.');
+        return Promise.resolve(null);
+    }
     const url = `https://translation.googleapis.com/language/translate/v2?key=${API_KEYS.GOOGLE_CLOUD_API_KEY}`;
     
     // Fetch the translation data from Google Cloud API

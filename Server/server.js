@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors'); // Enable CORS for Swagger compatibility
 const mongoose = require('mongoose');
@@ -18,15 +19,18 @@ app.use(express.json());
 app.use('/v1', contactRoutes);
 
 // Connect to MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/contactbook', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('MongoDB connected successfully at 127.0.0.1:27017');
-}).catch((error) => {
-  console.error('MongoDB connection error:', error.message);
-  process.exit(1); // Exit if MongoDB connection fails
-});
+const MONGODB_URI = process.env.MONGODB_URI;
+if (!MONGODB_URI) {
+  console.error('MONGODB_URI is not defined');
+  process.exit(1);
+}
+mongoose.connect(MONGODB_URI)
+  .then(() => {
+    console.log('MongoDB connected successfully');
+  }).catch((error) => {
+    console.error('MongoDB connection error:', error.message);
+    process.exit(1); // Exit if MongoDB connection fails
+  });
 
 // Start the server
 const PORT = process.env.PORT || 8080;
